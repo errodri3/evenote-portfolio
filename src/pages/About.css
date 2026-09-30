@@ -1,0 +1,54 @@
+.ab { max-width: 1000px; margin-inline: auto; width: 100%; display: flex; flex-direction: column; gap: 44px; }
+
+/* intro + polaroid */
+.ab-hero { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 40px; align-items: center; }
+.ab-intro { display: flex; flex-direction: column; gap: 18px; }
+.ab-title { margin: 0; font-size: clamp(38px, 6vw, 62px); line-height: 1.05; font-weight: 800; text-wrap: balance; }
+.squig {
+  padding-bottom: 8px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='8' viewBox='0 0 24 8'%3E%3Cpath d='M0 4q6-6 12 0t12 0' fill='none' stroke='%237CC04B' stroke-width='2.4'/%3E%3C/svg%3E") repeat-x 0 100% / 24px 8px;
+}
+.ab-lede { margin: 0; font-size: 19px; line-height: 1.7; max-width: 56ch; }
+.ab-links { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+
+.polaroid { margin: 0; background: #fff; padding: 14px 14px 10px; border-radius: 6px; box-shadow: 0 10px 24px rgba(47,58,44,.16); transform: rotate(3deg); max-width: 340px; width: 100%; justify-self: center; }
+.polaroid-img { aspect-ratio: 4/5; background: var(--soft); border: 2px dashed var(--line); display: grid; place-items: center; color: var(--muted); font-size: 14px; }
+.polaroid img { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; }
+.polaroid figcaption { font-family: var(--hand); font-size: 28px; text-align: center; padding-top: 6px; }
+
+/* sections */
+.ab-sec { display: flex; flex-direction: column; gap: 12px; }
+.ab-label { margin: 0; font-size: 13px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--green-dk); }
+
+/* experience list */
+.xp-list { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--line); }
+.xp-list li { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px 20px; padding: 16px 2px; border-bottom: 2px solid var(--line); }
+.xp-org { font-size: 20px; font-weight: 800; }
+.xp-role { font-size: 17px; color: var(--muted); }
+
+/* toolbox */
+.tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.tool { padding: 18px 20px; border-radius: 18px; background: var(--paper); border: 2px solid var(--line); display: flex; flex-direction: column; gap: 10px; }
+.tool h3 { margin: 0; font-family: var(--hand); font-size: 28px; line-height: 1; }
+.tool-tag { font-size: 15px; padding: 5px 13px; }
+
+/* outside of work */
+.out-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; font-size: 17px; }
+.out-list b { display: inline-block; min-width: 96px; color: var(--green-dk); }
+
+/* closing links (also used on Why) */
+.ab-end { display: flex; flex-direction: column; gap: 4px; padding-top: 24px; border-top: 2px dashed var(--line); font-size: 17px; }
+.ab-end p { margin: 0; }
+
+/* Why page */
+.why-note { display: flex; flex-direction: column; gap: 14px; padding: 28px 30px; background: #fff; border-radius: 18px; border: 4px solid var(--blue); position: relative; }
+.why-note .pg-num { position: absolute; right: 14px; bottom: 14px; width: 32px; height: 32px; border-radius: 50%; background: var(--green); color: #fff; font-weight: 800; display: grid; place-items: center; }
+.why-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.why { padding: 20px; border-radius: 20px; background: var(--paper); border: 2px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
+.why h3 { margin: 0; font-family: var(--hand); font-size: 28px; line-height: 1.05; }
+.why p { margin: 0; font-size: 15.5px; }
+
+@media (max-width: 820px) {
+  .ab-hero, .tool-grid, .why-grid { grid-template-columns: 1fr; }
+  .polaroid { max-width: 280px; }
+}
