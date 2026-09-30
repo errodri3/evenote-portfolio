@@ -1,0 +1,35 @@
+.foot { margin-top: 30px; border: 2px solid var(--line); border-radius: 28px; background: #F0F6E6; overflow: hidden; }
+
+/* top row */
+.foot-next { display: flex; align-items: center; gap: 6px 18px; flex-wrap: wrap; padding: 16px 24px; border-bottom: 2px dashed var(--line); }
+.foot-label { font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.foot-links { display: flex; gap: 6px 18px; flex-wrap: wrap; }
+.foot-links .ulink { font-size: 17px; }
+.foot-top { margin-left: auto; background: none; border: 0; padding: 8px 0; font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+.foot-top:hover { color: var(--ink); }
+
+/* drawing */
+.foot-scene { padding: 10px 16px 0; display: flex; justify-content: center; }
+.foot-scene svg { width: 100%; max-width: 760px; height: auto; }
+
+/* bottom row */
+.foot-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; padding: 8px 24px 22px; }
+.foot-id { display: flex; flex-direction: column; gap: 8px; }
+.foot-brand { display: flex; align-items: center; gap: 10px; }
+.foot-name { font-family: var(--hand); font-weight: 700; font-size: 30px; line-height: 1; }
+.foot-made { margin: 0; font-size: 16px; color: var(--muted); }
+.foot-made a { color: var(--green-dk); }
+.heart { color: #D9486A; }
+
+.foot-right { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
+.socials { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.soc { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: var(--ink); border: 2px solid transparent; }
+.soc:hover { background: #fff; border-color: var(--line); }
+.soc-resume { height: 44px; padding: 0 14px; border-radius: 22px; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); text-decoration: none; border: 2px solid var(--line); background: #fff; }
+.soc-resume:hover { border-color: var(--green); }
+.fine { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+@media (max-width: 620px) {
+  .foot-right { align-items: flex-start; }
+  .foot-top { margin-left: 0; }
+}

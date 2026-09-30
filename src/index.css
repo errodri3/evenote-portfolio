@@ -95,3 +95,7 @@ input, textarea { cursor: text; }
 /* underlined text link */
 .ulink { background: none; border: 0; padding: 2px 0; font-weight: 700; font-size: 16px; color: var(--green-dk); text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
 .ulink:hover { color: var(--ink); }
+
+/* stylus tap ring */
+.tap { position: fixed; width: 26px; height: 26px; margin: -13px 0 0 -13px; border-radius: 50%; border: 2px solid var(--green); pointer-events: none; z-index: 100; animation: tap .45s ease-out forwards; }
+@keyframes tap { from { transform: scale(.3); opacity: 1 } to { transform: scale(1.5); opacity: 0 } }
