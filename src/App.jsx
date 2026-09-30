@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Handheld from './components/Handheld'
+import Sidebar from './components/Sidebar'
 import TopBar from './components/TopBar'
 import Footer from './components/Footer'
 import Home from './pages/Home'
@@ -9,6 +10,18 @@ import Work from './pages/Work'
 import CaseStudy from './pages/CaseStudy'
 import Why from './pages/Why'
 import WriteNote from './pages/WriteNote'
+
+// true when the screen matches a media query (e.g. small screens)
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(() => window.matchMedia(query).matches)
+  useEffect(() => {
+    const mq = window.matchMedia(query)
+    const onChange = () => setMatches(mq.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [query])
+  return matches
+}
 
 // Scroll to the top whenever the page changes (unless the link has a #section)
 function ScrollToTop() {
@@ -38,29 +51,54 @@ function useStylusTaps() {
 
 export default function App() {
   const { pathname } = useLocation()
+  const small = useMediaQuery('(max-width: 960px)')
 
   // Show the handheld first, but only when someone lands on the home page.
-  // Direct links (like /work/nudge) skip straight to that page.
   const [started, setStarted] = useState(pathname !== '/')
+  const [menuOpen, setMenuOpen] = useState(false)   // side panel on small screens
   useStylusTaps()
+
+  // close the side panel when the page changes, or when Escape is pressed
+  useEffect(() => { setMenuOpen(false) }, [pathname])
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') setMenuOpen(false) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  function goHandheld() {
+    setMenuOpen(false)
+    setStarted(false)
+    window.scrollTo(0, 0)
+  }
 
   if (!started) return <Handheld onStart={() => setStarted(true)} />
 
   return (
-    <div className="app">
+    <div className="shell">
       <ScrollToTop />
-      <TopBar onHandheld={() => setStarted(false)} />
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/work" element={<Work />} />
-          <Route path="/work/:id" element={<CaseStudy />} />
-          <Route path="/why" element={<Why />} />
-          <Route path="/write" element={<WriteNote />} />
-        </Routes>
-      </main>
-      <Footer />
+      <Sidebar
+        open={menuOpen}
+        hidden={small && !menuOpen}   // hidden panels can't be tabbed into
+        onClose={() => setMenuOpen(false)}
+        onHandheld={goHandheld}
+      />
+      {small && menuOpen && <div className="backdrop" onClick={() => setMenuOpen(false)} />}
+
+      <div className="main-col">
+        <TopBar menuOpen={menuOpen} onMenu={() => setMenuOpen(true)} />
+        <main className="content">
+          <Routes>
+            <Route path="/" element={<Home onBack={goHandheld} />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/work" element={<Work />} />
+            <Route path="/work/:id" element={<CaseStudy />} />
+            <Route path="/why" element={<Why />} />
+            <Route path="/write" element={<WriteNote />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </div>
   )
 }

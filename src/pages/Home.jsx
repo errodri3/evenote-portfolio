@@ -8,7 +8,7 @@ import './Home.css'
 const LAST = NOTES.length - 1
 const clamp = (i) => Math.max(0, Math.min(LAST, i))
 
-export default function Home() {
+export default function Home({ onBack }) {
   const navigate = useNavigate()
   const trackRef = useRef(null)
   const drag = useRef({ x: null, moved: false, off: 0 })
@@ -20,8 +20,8 @@ export default function Home() {
 
   // spacing depends on screen size
   const small = width < 620
-  const noteW = small ? 150 : 210
-  const gap = small ? Math.min(165, width * 0.44) : 250
+  const noteW = small ? 150 : 220
+  const gap = small ? Math.min(165, width * 0.44) : 260
 
   // keep track of the wave area's width when the window resizes
   useEffect(() => {
@@ -86,6 +86,7 @@ export default function Home() {
 
   return (
     <section className="home" aria-label="Home">
+      {/* the "screen": everything lives inside this frame */}
       <div className="stage checker">
         {/* green wave behind the notes */}
         <svg className="ribbon" viewBox="0 0 1200 220" preserveAspectRatio="none" aria-hidden="true">
@@ -103,11 +104,11 @@ export default function Home() {
         <div className={'track' + (dragging ? ' dragging' : '')} ref={trackRef}
           onPointerDown={onPointerDown} style={{ '--nw': noteW + 'px' }}>
           {NOTES.map((n, i) => {
-            const off = i - sel + dragOff        // position relative to the picked note
+            const off = i - sel + dragOff
             const dist = Math.abs(off)
             const on = i === sel
             const x = off * gap
-            const y = Math.sin(off * 1.05) * 38 - (on ? 10 : 0)   // follows the wave
+            const y = Math.sin(off * 1.05) * 38 - (on ? 10 : 0)
             const scale = on ? 1.32 : Math.max(0.72, 0.95 - dist * 0.08)
             const rotate = on ? 0 : off > 0 ? 5 : -5
             const hidden = dist > 2.6
@@ -149,15 +150,20 @@ export default function Home() {
             <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
         </div>
-      </div>
 
-      {/* Write a Note bar */}
-      <Link className="write-bar" to="/write">
-        <span className="chk">
-          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5 11-11" fill="none" stroke="var(--green-dk)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>
-        </span>
-        Write a Note
-      </Link>
+        {/* bottom of the screen: back tile (left edge) + Write a Note (centered) */}
+        <div className="stage-bar">
+          <button className="back-tile" type="button" aria-label="Back to the handheld" onClick={onBack}>
+            <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H6M11 6l-6 6 6 6" fill="none" stroke="var(--green-dk)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </button>
+          <Link className="write-bar" to="/write">
+            <span className="chk">
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5 11-11" fill="none" stroke="var(--green-dk)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" /></svg>
+            </span>
+            Write a Note
+          </Link>
+        </div>
+      </div>
     </section>
   )
 }
