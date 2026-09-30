@@ -20,7 +20,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <TopBar />
+      <TopBar onHandheld={() => setStarted(false)} />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />

@@ -9,11 +9,12 @@
 .brand-role { font-size: 13px; color: var(--muted); }
 
 .nav { display: flex; gap: 6px; flex-wrap: wrap; }
-.nav a {
+.nav a, .nav button {
   height: 44px; padding: 0 18px; border-radius: 22px;
   display: inline-flex; align-items: center;
-  border: 2px solid transparent;
+  border: 2px solid transparent; background: none;
   font-size: 15px; font-weight: 700; color: var(--muted); text-decoration: none;
 }
-.nav a:hover { color: var(--ink); background: var(--soft); }
+.nav a:hover, .nav button:hover { color: var(--ink); background: var(--soft); }
 .nav a[aria-current="page"] { color: var(--ink); background: var(--green-lt); border-color: var(--green); }
+.nav .hh-btn { border-color: var(--line); color: var(--ink); margin-left: 6px; }

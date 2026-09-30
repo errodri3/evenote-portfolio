@@ -12,14 +12,15 @@
   --blue: #79B3E3;
   --yellow: #F2D54A;
 
-  /* fonts */
-  --hand: 'Gaegu', 'Comic Sans MS', cursive;
-  --body: 'M PLUS Rounded 1c', ui-rounded, system-ui, sans-serif;
-
+  /* handheld */
   --shell: #26282B;
   --shell-hi: #3A3D41;
   --shell-lo: #17181A;
   --glass: #0E0F10;
+
+  /* fonts */
+  --hand: 'Gaegu', 'Comic Sans MS', cursive;
+  --body: 'M PLUS Rounded 1c', ui-rounded, system-ui, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -49,7 +50,17 @@ input, textarea { cursor: text; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
-.app { max-width: 1160px; margin-inline: auto; display: flex; flex-direction: column; gap: 22px; padding-bottom: 48px; }
+/* page wrapper */
+.app {
+  max-width: 1160px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding-bottom: 48px;
+  animation: fadein .45s ease;
+}
+@keyframes fadein { from { opacity: 0 } to { opacity: 1 } }
 
 /* checkerboard background, used on screens */
 .checker {
@@ -60,6 +71,7 @@ input, textarea { cursor: text; }
   background-size: 36px 36px;
   background-position: 0 0, 18px 18px;
 }
+
 /* gentle floating animation */
 .bob { animation: bob 2.8s ease-in-out infinite; }
 @keyframes bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-5px) } }
