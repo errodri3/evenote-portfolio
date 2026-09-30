@@ -1,20 +1,24 @@
 .topbar {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 14px; flex-wrap: wrap;
-  padding-block: 18px 14px;
-  border-bottom: 2px dashed var(--line);
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px clamp(16px, 3vw, 40px);
+  background: rgba(250, 248, 240, .92); backdrop-filter: blur(8px);
+  border-bottom: 2px solid var(--line);
 }
-.brand { display: flex; flex-direction: column; text-decoration: none; color: inherit; }
-.brand-name { font-family: var(--hand); font-weight: 700; font-size: 30px; line-height: 1; }
-.brand-role { font-size: 13px; color: var(--muted); }
+.menu-btn { display: none; width: 44px; height: 44px; border-radius: 12px; border: 2px solid var(--line); background: #fff; place-items: center; padding: 0; }
 
-.nav { display: flex; gap: 6px; flex-wrap: wrap; }
-.nav a, .nav button {
+.nav { display: flex; gap: 6px; flex-wrap: wrap; margin-inline: auto; }
+.nav a {
   height: 44px; padding: 0 18px; border-radius: 22px;
   display: inline-flex; align-items: center;
-  border: 2px solid transparent; background: none;
+  border: 2px solid transparent;
   font-size: 15px; font-weight: 700; color: var(--muted); text-decoration: none;
 }
-.nav a:hover, .nav button:hover { color: var(--ink); background: var(--soft); }
+.nav a:hover { color: var(--ink); background: var(--soft); }
 .nav a[aria-current="page"] { color: var(--ink); background: var(--green-lt); border-color: var(--green); }
-.nav .hh-btn { border-color: var(--line); color: var(--ink); margin-left: 6px; }
+
+@media (max-width: 960px) {
+  .menu-btn { display: grid; }
+  .nav { margin-inline: auto 0; }
+  .nav a { padding: 0 12px; }
+}

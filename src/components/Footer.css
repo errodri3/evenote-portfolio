@@ -1,7 +1,8 @@
-.foot { margin-top: 30px; border: 2px solid var(--line); border-radius: 28px; background: #F0F6E6; overflow: hidden; }
+/* straight full-width band, always at the bottom */
+.foot { margin-top: 56px; border-top: 2px solid var(--line); background: #EEF4E4; }
 
 /* top row */
-.foot-next { display: flex; align-items: center; gap: 6px 18px; flex-wrap: wrap; padding: 16px 24px; border-bottom: 2px dashed var(--line); }
+.foot-next { display: flex; align-items: center; gap: 6px 18px; flex-wrap: wrap; padding: 16px clamp(16px, 3vw, 40px); border-bottom: 1px solid var(--line); }
 .foot-label { font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 .foot-links { display: flex; gap: 6px 18px; flex-wrap: wrap; }
 .foot-links .ulink { font-size: 17px; }
@@ -9,11 +10,11 @@
 .foot-top:hover { color: var(--ink); }
 
 /* drawing */
-.foot-scene { padding: 10px 16px 0; display: flex; justify-content: center; }
+.foot-scene { padding: 24px clamp(16px, 3vw, 40px) 0; display: flex; justify-content: center; }
 .foot-scene svg { width: 100%; max-width: 760px; height: auto; }
 
 /* bottom row */
-.foot-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; padding: 8px 24px 22px; }
+.foot-bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; padding: 12px clamp(16px, 3vw, 40px) 28px; }
 .foot-id { display: flex; flex-direction: column; gap: 8px; }
 .foot-brand { display: flex; align-items: center; gap: 10px; }
 .foot-name { font-family: var(--hand); font-weight: 700; font-size: 30px; line-height: 1; }

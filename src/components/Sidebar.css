@@ -1,0 +1,31 @@
+.side {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  display: flex; flex-direction: column; gap: 22px;
+  padding: 32px 26px 26px;
+  background: #F3F7EA; border-right: 2px solid var(--line);
+}
+.side-close { display: none; }
+.side-name { font-family: var(--hand); font-weight: 700; font-size: 52px; line-height: .9; }
+.side-quote { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.6; }
+.side-roles { margin: 0; display: flex; flex-direction: column; gap: 14px; }
+.side-roles dt { font-size: 13px; font-weight: 800; letter-spacing: .08em; }
+.side-roles dd { margin: 2px 0 0; color: var(--muted); font-size: 15px; }
+.side-art { margin-top: auto; aspect-ratio: 16/9; border: 2px dashed var(--line); border-radius: 14px; display: grid; place-items: center; color: var(--muted); font-size: 13px; }
+.side-btn { min-height: 46px; border: 2px solid var(--ink); border-radius: 12px; background: #fff; font-weight: 800; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
+.side-btn:hover { background: var(--green-lt); }
+
+/* small screens: slide-out panel */
+@media (max-width: 960px) {
+  .side {
+    position: fixed; left: 0; top: 0; z-index: 50;
+    width: min(320px, 86vw);
+    transform: translateX(-100%);
+    transition: transform .3s ease;
+    box-shadow: 8px 0 24px rgba(0,0,0,.12);
+  }
+  .side.open { transform: none; }
+  .side-close {
+    display: grid; place-items: center; align-self: flex-start;
+    width: 44px; height: 44px; border-radius: 12px; border: 2px solid var(--line); background: #fff;
+  }
+}

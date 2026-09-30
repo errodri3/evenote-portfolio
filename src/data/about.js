@@ -37,3 +37,13 @@ export const LINKS = {
   resume: '',
   playlist: '',
 }
+
+// Side panel: quick brief about you
+export const SIDEBAR = {
+  quote: '"I care about design that feels personal!"',
+  roles: [
+    ['@UC IRVINE', 'Informatics · HCI'],
+    ['@DIGITAL LEARNING LAB', 'Researcher'],
+    ['@DREAMS FOR SCHOOLS', 'STEAM Instructor'],
+  ],
+}

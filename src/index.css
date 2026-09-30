@@ -27,7 +27,6 @@
 
 body {
   margin: 0;
-  padding-inline: 16px;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--body);
@@ -50,17 +49,31 @@ input, textarea { cursor: text; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 
-/* page wrapper */
-.app {
-  max-width: 1160px;
-  margin-inline: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  padding-bottom: 48px;
+/* ---------- layout ---------- */
+#landing { padding-inline: 16px; }
+
+/* side panel + main column */
+.shell {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  min-height: 100vh;
   animation: fadein .45s ease;
 }
 @keyframes fadein { from { opacity: 0 } to { opacity: 1 } }
+
+/* main column: top bar, page, footer (footer pushed to the bottom) */
+.main-col { display: flex; flex-direction: column; min-height: 100vh; min-width: 0; }
+.content { flex: 1; width: 100%; max-width: 1120px; margin-inline: auto; padding: 24px clamp(16px, 3vw, 40px) 0; }
+
+/* dark overlay behind the side panel on small screens */
+.backdrop { display: none; }
+
+@media (max-width: 960px) {
+  .shell { grid-template-columns: 1fr; }
+  .backdrop { display: block; position: fixed; inset: 0; z-index: 40; background: rgba(30, 35, 28, .35); }
+}
+
+/* ---------- shared bits ---------- */
 
 /* checkerboard background, used on screens */
 .checker {
@@ -76,12 +89,13 @@ input, textarea { cursor: text; }
 .bob { animation: bob 2.8s ease-in-out infinite; }
 @keyframes bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-5px) } }
 
-/* ---------- shared page styles ---------- */
+/* page headings */
 .page-head { display: flex; flex-direction: column; gap: 6px; max-width: 680px; }
 .eyebrow { font-size: 13px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--green-dk); }
 .page-title { font-size: clamp(34px, 5vw, 48px); line-height: 1.1; margin: 0; font-weight: 800; text-wrap: balance; }
 .page-lede { margin: 0; color: var(--muted); font-size: 18px; max-width: 62ch; }
 
+/* tags */
 .tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .tag { padding: 3px 12px; border-radius: 14px; background: var(--soft); border: 1.5px solid var(--line); font-size: 13px; font-weight: 500; }
 
