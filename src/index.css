@@ -15,6 +15,11 @@
   /* fonts */
   --hand: 'Gaegu', 'Comic Sans MS', cursive;
   --body: 'M PLUS Rounded 1c', ui-rounded, system-ui, sans-serif;
+
+  --shell: #26282B;
+  --shell-hi: #3A3D41;
+  --shell-lo: #17181A;
+  --glass: #0E0F10;
 }
 
 * { box-sizing: border-box; }
@@ -45,3 +50,16 @@ input, textarea { cursor: text; }
 }
 
 .app { max-width: 1160px; margin-inline: auto; display: flex; flex-direction: column; gap: 22px; padding-bottom: 48px; }
+
+/* checkerboard background, used on screens */
+.checker {
+  background-color: #F5F9EC;
+  background-image:
+    linear-gradient(45deg, #EAF2DC 25%, transparent 25%, transparent 75%, #EAF2DC 75%),
+    linear-gradient(45deg, #EAF2DC 25%, transparent 25%, transparent 75%, #EAF2DC 75%);
+  background-size: 36px 36px;
+  background-position: 0 0, 18px 18px;
+}
+/* gentle floating animation */
+.bob { animation: bob 2.8s ease-in-out infinite; }
+@keyframes bob { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-5px) } }
