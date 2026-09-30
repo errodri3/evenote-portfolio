@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom'
 import Mascot from '../components/Mascot'
 import './WriteNote.css'
 
-// Later (step 10): paste your Formspree form URL here so notes actually send.
-// While it's empty, Send just shows the thank-you screen.
-const FORM_ENDPOINT = 'https://formspree.io/f/xaenkvqw'
-
 const W = 1000, H = 600   // canvas drawing size (it scales to fit the screen)
 const PAGES = 4
 const INKS = [['Black', '#2B2B2B'], ['Red', '#D8434E'], ['Blue', '#3B7DD8'], ['Green', '#3E9A4E']]
 const STATIONERY = ['st-green', 'st-dots', 'st-blue']
+// colors used when turning a page into an image (match WriteNote.css)
+const PAPER = {
+  'st-green': { frame: '#A9CF7E', line: '#E4EAD8', dotted: false },
+  'st-dots': { frame: '#EFD34A', line: '#E4EAD8', dotted: true },
+  'st-blue': { frame: '#9CC8EE', line: '#DCE9F6', dotted: false },
+}
 
 // small line icons for the toolbar
 const ICONS = {
@@ -38,6 +40,21 @@ function today() {
   return `${p(d.getMonth() + 1)}/${p(d.getDate())}/${d.getFullYear()} ${days[d.getDay()]}`
 }
 
+// split typed text into lines that fit the paper width
+function wrapText(ctx, text, maxWidth) {
+  const lines = []
+  text.split('\n').forEach((para) => {
+    let line = ''
+    para.split(' ').forEach((word) => {
+      const test = line ? line + ' ' + word : word
+      if (ctx.measureText(test).width > maxWidth && line) { lines.push(line); line = word }
+      else line = test
+    })
+    lines.push(line)
+  })
+  return lines
+}
+
 export default function WriteNote() {
   const canvases = useRef([])                     // the 4 canvas elements
   const drawn = useRef(Array(PAGES).fill(false))  // which pages have drawings
@@ -50,7 +67,8 @@ export default function WriteNote() {
   const [texts, setTexts] = useState(Array(PAGES).fill(''))
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState('')        // error message under the toolbar
+  const [status, setStatus] = useState('')        // message under the toolbar
+  const [sending, setSending] = useState(false)
   const [flying, setFlying] = useState(false)     // send animation
   const [sent, setSent] = useState(false)
 
@@ -77,12 +95,11 @@ export default function WriteNote() {
     const c = canvases.current[i]
     c.setPointerCapture(e.pointerId)
     const ctx = c.getContext('2d')
-    // the eraser "draws" transparency
     ctx.globalCompositeOperation = mode === 'eraser' ? 'destination-out' : 'source-over'
     ctx.strokeStyle = ctx.fillStyle = INKS[ink][1]
     ctx.lineWidth = mode === 'eraser' ? 34 : 6
     const p = point(e, c)
-    ctx.beginPath(); ctx.arc(p.x, p.y, ctx.lineWidth / 2, 0, Math.PI * 2); ctx.fill() // a dot, for single taps
+    ctx.beginPath(); ctx.arc(p.x, p.y, ctx.lineWidth / 2, 0, Math.PI * 2); ctx.fill()
     if (mode === 'pen') drawn.current[i] = true
     stroke.current = { i, last: p }
   }
@@ -96,6 +113,42 @@ export default function WriteNote() {
     s.last = p
   }
   const onUp = () => { stroke.current = null }
+
+  // ----- turn one page into a PNG image (paper + lines + text + drawing) -----
+  function renderPage(i) {
+    const out = document.createElement('canvas')
+    out.width = W; out.height = H
+    const ctx = out.getContext('2d')
+    const paper = PAPER[STATIONERY[st]]
+
+    // paper + lines
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H)
+    ctx.fillStyle = paper.line
+    for (let y = 138; y < H - 50; y += 80) ctx.fillRect(50, y, W - 100, 2)
+
+    // frame
+    ctx.strokeStyle = paper.frame
+    ctx.lineWidth = paper.dotted ? 12 : 7
+    if (paper.dotted) { ctx.setLineDash([0, 22]); ctx.lineCap = 'round' }
+    ctx.beginPath(); ctx.roundRect(26, 26, W - 52, H - 52, 10); ctx.stroke()
+    ctx.setLineDash([])
+
+    // typed text
+    ctx.fillStyle = INKS[ink][1]
+    ctx.font = '56px Gaegu, cursive'
+    wrapText(ctx, texts[i], W - 100).slice(0, 5).forEach((line, k) => ctx.fillText(line, 50, 131 + k * 80))
+
+    // drawing on top
+    ctx.drawImage(canvases.current[i], 0, 0)
+
+    // green page flag
+    ctx.fillStyle = '#7CC04B'; ctx.strokeStyle = '#fff'; ctx.lineWidth = 5
+    ctx.beginPath(); ctx.arc(W - 54, H - 54, 32, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
+    ctx.fillStyle = '#fff'; ctx.font = 'bold 34px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+    ctx.fillText(String(i + 1), W - 54, H - 52)
+
+    return out.toDataURL('image/png')
+  }
 
   // ----- toolbar actions -----
   function clearPage() {
@@ -114,25 +167,34 @@ export default function WriteNote() {
   // ----- send -----
   async function onSubmit(e) {
     e.preventDefault()
-    const hasText = texts.some((t) => t.trim())
-    const hasDrawing = drawn.current.some(Boolean)
+    if (sending) return
+    const used = texts.map((t, i) => t.trim() || drawn.current[i])  // which pages have something
     if (!name.trim()) return setStatus('Add your name so I know who the note is from.')
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) return setStatus('Add an email address like you@email.com so I can write back.')
-    if (!hasText && !hasDrawing) return setStatus('Your note is empty. Type or draw something first.')
+    if (!used.some(Boolean)) return setStatus('Your note is empty. Type or draw something first.')
     setStatus('')
 
-    if (FORM_ENDPOINT) {
-      const data = new FormData()
-      data.append('name', name)
-      data.append('email', email)
-      texts.forEach((t, i) => t.trim() && data.append(`page ${i + 1} text`, t))
-      canvases.current.forEach((c, i) => drawn.current[i] && data.append(`page ${i + 1} drawing`, c.toDataURL('image/png')))
+    const pages = []
+    used.forEach((u, i) => { if (u) pages.push({ text: texts[i], image: renderPage(i) }) })
+    const payload = { name: name.trim(), email: email.trim(), pages }
+
+    if (import.meta.env.DEV) {
+      // the /api function only runs on Vercel, so locally we just log it
+      console.info('Dev mode: note not sent. This is what would be sent:', payload)
+    } else {
+      setSending(true)
       try {
-        const res = await fetch(FORM_ENDPOINT, { method: 'POST', body: data, headers: { Accept: 'application/json' } })
+        const res = await fetch('/api/send-note', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
         if (!res.ok) throw new Error()
       } catch {
+        setSending(false)
         return setStatus("Your note didn't send. Check your connection and try again.")
       }
+      setSending(false)
     }
 
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -232,7 +294,7 @@ export default function WriteNote() {
           <button className="pg-btn" type="button" aria-label="Next page" onClick={() => setPage((p) => (p + 1) % PAGES)}><Icon name="down" size={16} /></button>
         </div>
 
-        <button className="tb send" type="submit"><Icon name="send" />Send</button>
+        <button className="tb send" type="submit" disabled={sending}><Icon name="send" />{sending ? 'Sending…' : 'Send'}</button>
       </div>
 
       <div className="status" aria-live="polite">{status}</div>
