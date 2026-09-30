@@ -5,7 +5,7 @@ import './WriteNote.css'
 
 // Later (step 10): paste your Formspree form URL here so notes actually send.
 // While it's empty, Send just shows the thank-you screen.
-const FORM_ENDPOINT = ''
+const FORM_ENDPOINT = 'https://formspree.io/f/xaenkvqw'
 
 const W = 1000, H = 600   // canvas drawing size (it scales to fit the screen)
 const PAGES = 4
