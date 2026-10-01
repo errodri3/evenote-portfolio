@@ -14,7 +14,7 @@ export function WelcomeScreen() {
             <path className="draw" d="M4 18C60 4 110 28 170 14S280 4 340 18S400 22 416 12"
               fill="none" stroke="#7CC04B" strokeWidth="7" strokeLinecap="round" />
           </svg>
-          <div className="wel-sub">Web Developer + UI/UX Designer</div>
+          <div className="wel-sub">UI/UX Designer + Web Developer</div>
         </div>
       </div>
       <Mascot className="wel-mascot bob" />
@@ -115,7 +115,7 @@ export default function Handheld({ onStart }) {
           <div className="leds" aria-hidden="true"><i /><i /><i /></div>
         </div>
       </div>
-      <div className="landing-hint">Press Start to open my portfolio</div>
+      <div className="landing-hint">Press Start or 'A' to open my portfolio</div>
 
       {/* the zoom copy of the top screen */}
       {zoom && (
