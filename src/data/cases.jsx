@@ -63,31 +63,51 @@ export const CASES = {
     ],
   },
 
-  nudge: {
+    nudge: {
     title: 'Nudge: Practice for Professional Confidence',
     short: 'Nudge',
-    one: 'A Duolingo-style app that helps college students practice interviews, networking, and professional communication.',
+    one: 'A daily habit app that helps college students build professional confidence through AI practice rooms, daily challenges, and streaks.',
     year: '2026',
     tags: ['UX/UI Design', 'User Research', 'Mobile'],
     role: 'UX/UI Designer',
     timeline: 'Spring Quarter 2026, 8 weeks',
     tools: 'Figma',
-    team: 'Team 7: Crystal, Christina, Evelyn, Hanin, Samina, Sergio',
-    lede: 'Nudge helps college students build confidence in interviews, networking, and professional communication through short guided practice and positive support. I assisted in ideation of the project, designed the hi-fi prototype, and presented the case study at demo day.',
+    team: 'Team 7',
+    lede: 'Nudge helps college students build confidence in interviews, networking, and professional communication through short daily practice and positive support. I helped shape the idea, designed the hi-fi prototype, and presented our case study at demo day.',
     sections: [
-      { k: 'context', h: 'Confidence is a skill', p: '' },
-      { k: 'problem', h: 'No low-stakes place to practice', p: 'Students and early-career professionals often struggle to communicate their experiences confidently in interviews, networking events, presentations, and workplace conversations.' },
       {
-        k: 'process', h: 'Narrowing the scope', image: true,
-        p: 'The first version covered both social and professional confidence. User testing showed students wanted a sharper focus, so we narrowed Nudge to professional skills only.',
+        k: 'context', h: 'Confidence is a skill',
+        p: 'We started by asking students how they feel in professional moments. We surveyed 54 people and interviewed 8. The same thing kept coming up: people had the skills, but froze when it came time to talk about them. One student told us, "A lot of it is just overthinking and not knowing how to start." Most also said they wanted progress tracking, personal challenges, and a points or streak system.',
+        stats: [['54', 'students surveyed'], ['72.2%', 'avoid social or professional situations because of discomfort'], ['90.7%', 'want to get better at professional speaking']],
+      },
+      {
+        k: 'problem', h: 'No low-stakes place to practice',
+        p: 'Students and early-career professionals often struggle to talk about their experience with confidence in interviews, networking events, and presentations. Mock interviews feel intimidating and feedback can feel harsh, so many people avoid practicing at all. Our question became: how can we help students build professional confidence through small, daily practice habits?',
+      },
+      {
+        k: 'process', h: 'From sketches to testing', image: true,
+        p: 'We built a persona, Maya, a 21-year-old student applying for her first internship with interview anxiety. Then we moved from lo-fi sketches to mid-fi and hi-fi screens in Figma. We ran 10 moderated usability sessions with college students and early-career users, plus a heuristic evaluation. Testing led to four big changes:',
         decisions: [
-          { b: 'Decision 1: professional only.', p: 'Cutting the social side made the practice paths clearer and easier to test.' },
-          { b: 'Decision 2: bite-sized practice.', p: '[Why short, Duolingo-style lessons fit how students actually prepare.]' },
-          { b: 'Decision 3: [your third decision].', p: '[What you changed after another round of testing.]' },
+          { b: 'Change 1: one focus, not two.', p: '7 of 10 users were confused by having both a Social Hub and a Professional Hub. We removed the Social Hub and grew the Professional Hub with job listings, networking events, and new opportunities.' },
+          { b: 'Change 2: a clearer record button.', p: '7 of 10 users tapped "done" without ever recording an answer. We redesigned the mic button with a clearer spot, a label, and a more obvious look.' },
+          { b: 'Change 3: XP that means something.', p: '8 of 10 users didn\'t understand XP. Now XP earns profile titles and streak savers, so missing a day doesn\'t feel like a punishment. We also moved the job-interest quiz and resume upload into onboarding.' },
+          { b: 'Change 4: redo a single question.', p: '5 of 10 users wanted to retry one question without restarting the whole interview. We added a redo button, which makes practice feel lower stakes.' },
         ],
       },
-      { k: 'solution', h: 'The hi-fi prototype', image: true, p: '[Key screens and flows. Add Figma frames here.]' },
-      { k: 'outcome', h: 'Demo day', p: '[Results, feedback from demo day, and what you would do next.]', stats: [['[#]', 'rounds of iteration'], ['[#]', 'user tests'], ['20', 'slide case study']] },
+      {
+        k: 'solution', h: 'Three ways to practice', image: true,
+        p: 'The final Nudge app is built around three features, each tied to something we heard in research.',
+        decisions: [
+          { b: 'Daily challenges.', p: 'Practice felt overwhelming, so Nudge gives small challenges that reset every 24 hours. They feel quick and routine instead of high pressure.' },
+          { b: 'Mock interviews with AI feedback.', p: 'Students had no safe place to practice out loud. AI practice rooms simulate real interviews and give instant feedback on clarity, confidence, and pace.' },
+          { b: 'Friends and progress tracking.', p: 'Practicing alone felt unmotivating. Friend streaks, a social feed, XP levels, and a progress page help users stay on track together.' },
+        ],
+      },
+      {
+        k: 'outcome', h: 'What we learned',
+        p: 'Many students feel less confident in professional situations than they show, and they want tools that are clear, personal, and simple. Cutting the Social Hub turned Nudge into a focused career and interview prep app. Next, we\'d run more user testing, add more practice rooms to the Professional Hub, and partner with campus career resources.',
+        stats: [['10', 'moderated usability sessions'], ['78%', 'task completion'], ['4/5', 'average satisfaction']],
+      },
     ],
   },
 }
