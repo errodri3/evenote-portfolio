@@ -8,14 +8,14 @@
 
 export const CASES = {
   c2l: {
-    title: 'Converse to Learn: Designing One Story Family',
+    title: 'Bilingual AI storybooks for young scientists',
     short: 'Converse to Learn',
     one: 'Reviewing 12 family-made AI story decks for bias, then designing one consistent family of characters to use across all of them.',
-    year: '[Year]',
+    year: '2026',
     tags: ['Research', 'Illustration', 'AI & Bias'],
-    role: 'Visual Designer & Illustrator [confirm]',
-    timeline: '[Start – End]',
-    tools: '[e.g. Procreate, Figma, ChatGPT]',
+    role: 'Researcher, Visual Designer',
+    timeline: '[2026 - 2027]',
+    tools: '[Figma, VSCode: HTML/CSS, JS, Adobe Photoshop]',
     team: 'UCI Digital Learning Lab, with University of Michigan and Harvard',
     lede: 'Converse to Learn makes conversational-agent books and videos that talk with young children to build dialogic learning. I design and illustrate the visual assets for the platform. Most recently, I reviewed 12 story decks that families made with AI image tools and turned them into one shared family of characters.',
     sections: [
@@ -67,16 +67,16 @@ export const CASES = {
     title: 'Nudge: Practice for Professional Confidence',
     short: 'Nudge',
     one: 'A Duolingo-style app that helps college students practice interviews, networking, and professional communication.',
-    year: '[Year]',
+    year: '2026',
     tags: ['UX/UI Design', 'User Research', 'Mobile'],
     role: 'UX/UI Designer [confirm]',
-    timeline: '[Quarter, e.g. 10 weeks]',
+    timeline: 'Spring Quarter 2026, 8 weeks',
     tools: 'Figma',
-    team: '[Team size], INF 134',
-    lede: 'Nudge helps college students build confidence in interviews, networking, and professional communication through short guided practice and positive support. I designed the hi-fi prototype in Figma and presented the case study at demo day.',
+    team: 'Team 7: Crystal, Christina, Evelyn, Hanin, Samina, Sergio',
+    lede: 'Nudge helps college students build confidence in interviews, networking, and professional communication through short guided practice and positive support. I assisted in ideation of the project, designed the hi-fi prototype, and presented the case study at demo day.',
     sections: [
-      { k: 'context', h: 'Confidence is a skill', p: '[What you learned about students and professional anxiety in early research.]' },
-      { k: 'problem', h: 'No low-stakes place to practice', p: '[The core problem statement, in one or two sentences.]' },
+      { k: 'context', h: 'Confidence is a skill', p: '' },
+      { k: 'problem', h: 'No low-stakes place to practice', p: '' },
       {
         k: 'process', h: 'Narrowing the scope', image: true,
         p: 'The first version covered both social and professional confidence. User testing showed students wanted a sharper focus, so we narrowed Nudge to professional skills only.',
