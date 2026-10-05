@@ -1,6 +1,7 @@
 import { Link, Navigate, useParams } from 'react-router-dom'
 import Thumb from '../components/Thumb'
 import Ph from '../components/Ph'
+import Attachments from '../components/Attachments'
 import { CASES, ORDER } from '../data/cases'
 import { noteFor } from './Work'
 import './Work.css'
@@ -80,6 +81,9 @@ export default function CaseStudy() {
           )}
         </section>
       ))}
+
+      {/* slides + demo video (only shows if the project has attachments) */}
+      {c.attachments && <Attachments key={id} files={c.attachments} />}
 
       {/* next project */}
       <section className="cs-sec">

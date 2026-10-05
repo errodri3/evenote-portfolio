@@ -1,11 +1,3 @@
-// Case studies. Anything in [brackets] shows highlighted as a reminder to fill it in.
-//
-// Each section:
-//   k = label ("context", "problem"...)   h = heading   p = paragraph
-//   optional: image: true      → shows an image slot
-//             decisions: [{ b, p }]  → decision cards
-//             stats: [[number, label]] → number tiles
-
 export const CASES = {
   c2l: {
     title: 'Bilingual AI storybooks for young scientists',
@@ -63,7 +55,7 @@ export const CASES = {
     ],
   },
 
-    nudge: {
+  nudge: {
     title: 'Nudge: Practice for Professional Confidence',
     short: 'Nudge',
     one: 'A daily habit app that helps college students build professional confidence through AI practice rooms, daily challenges, and streaks.',
@@ -73,6 +65,11 @@ export const CASES = {
     timeline: 'Spring Quarter 2026, 8 weeks',
     tools: 'Figma',
     team: 'Team 7',
+    attachments: {
+      slides: { folder: '/work/nudge/slides/', count: 26, ext: 'jpg' },
+      video: { src: '/work/nudge/demo.mp4', poster: '/work/nudge/slides/01.jpg', length: '2:11' },
+      pdf: '/work/nudge/nudge-case-study.pdf',
+    },
     lede: 'Nudge helps college students build confidence in interviews, networking, and professional communication through short daily practice and positive support. I helped shape the idea, designed the hi-fi prototype, and presented our case study at demo day.',
     sections: [
       {
