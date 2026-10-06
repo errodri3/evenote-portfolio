@@ -1,38 +1,31 @@
 export const CASES = {
   c2l: {
-    title: 'Bilingual AI storybooks for young scientists',
+    title: 'The Science Adventures of Luna and Leo',
     short: 'Converse to Learn',
-    one: 'Reviewing 12 family-made AI story decks for bias, then designing one consistent family of characters to use across all of them.',
+    one: 'Bilingual AI storybooks that introduce science to kids ages 4 to 7. I built and launched the project website, and I keep designing for the team as the work continues.',
     year: '2026',
-    tags: ['Research', 'Illustration', 'AI & Bias'],
-    role: 'Researcher, Visual Designer',
-    timeline: '2026 - 2027',
-    tools: 'Figma, VSCode: HTML/CSS, JS, Adobe Photoshop',
-    team: 'UCI Digital Learning Lab, with University of Michigan and Harvard',
-    lede: 'Converse to Learn makes conversational-agent books and videos that talk with young children to build dialogic learning. I design and illustrate the visual assets for the platform. Most recently, I reviewed 12 story decks that families made with AI image tools and turned them into one shared family of characters.',
-    owned: ['Designed and illustrated visual assets for the platform', 'Cataloged and reviewed all 12 family story decks for bias', 'Designed one shared family of 10 characters'],
-    hero: { src: '/work/converse-to-learn/images/hero.png', caption: 'The family of characters' },
+    status: 'In progress',
+    lab: 'UCI Digital Learning Lab',
+    link: { href: 'https://lunaandleo.org', label: 'Visit lunaandleo.org' },
+    tags: ['Web Design', 'Illustration', 'Research'],
+    role: 'Designer, Web Developer',
+    timeline: '2026 - now',
+    tools: 'Figma, HTML/CSS, JS, Photoshop',
+    team: 'Converse to Learn · UC Irvine, University of Michigan, Harvard',
+    lede: 'Converse to Learn makes bilingual storybooks where an AI partner talks with young children about science. This project is still in the works, so this note covers what has shipped so far and what I am working on now.',
+    owned: [
+      'Designed and built lunaandleo.org, the public launch site for the project',
+      '[one or two other things you have finished, if you want to add them]',
+    ],
+    hero: { src: '/work/converse-to-learn/images/hero.png', caption: 'lunaandleo.org' },
     notes: [
-      { short: 'Context', k: 'context', h: 'Stories made by families', body: [
-        { p: "The project is a collaboration between UCI's Digital Learning Lab, the University of Michigan Marshall Family School of Education, and the Harvard Graduate School of Education. Families created story decks with AI image generation, about things like kids visiting grandparents, going back to their homeland, and tech versus tradition." },
+      { short: 'Launch', k: 'shipped', h: 'lunaandleo.org', body: [
+        { p: '[2–3 sentences: what the site needed to do, who it is for (families, teachers, researchers), and the decisions you made designing and building it.]' },
+        { img: { src: '/work/converse-to-learn/images/site.png', caption: 'The launch site' } },
       ] },
-      { short: 'Problem', k: 'problem', h: 'Twelve stories, twelve casts', body: [
-        { p: 'Every deck had its own characters, and AI-generated images brought their own bias along with them. There was no shared set of characters or backgrounds the team could reuse from story to story.' },
-      ] },
-      { short: 'Process', k: 'process', h: 'Catalog, compare, combine', body: [
-        { p: 'I cataloged all 12 decks (7 from UCI and 5 from Michigan) and looked for common characters, story patterns, and signs of AI bias.' },
-        { decision: { b: 'One family, not twelve.', p: 'The team agreed to analyze all 12 stories together and build one coherent family that could appear in any of them.' } },
-        { decision: { b: 'Design for who was missing.', p: 'I added characters and storylines from underrepresented countries, plus identity themes like colorism, so the set reflects more kids.' } },
-        { decision: { b: 'Consistency first.', p: 'I planned reusable home and school backgrounds so the same family can be placed across many stories and still look like themselves.' } },
-        { img: { src: '/work/converse-to-learn/images/catalog.png', caption: 'Story deck catalog' } },
-      ] },
-      { short: 'Solution', k: 'solution', h: 'A family of ten', body: [
-        { p: 'Mateo, Sofia, Elena, Andres, Jose, Mercedes, Diego, Valentina, Miguel, and Rosa: siblings, parents, grandparents, cousins, an aunt, and an uncle.' },
-        { img: { src: '/work/converse-to-learn/images/family.png', caption: 'Character sheets' } },
-      ] },
-      { short: 'Outcome', k: 'outcome', h: 'Where it landed', body: [
-        { p: '[What the team did with the family next, and what you learned.]' },
-        { stats: [['12', 'story decks reviewed'], ['10', 'family members designed'], ['3', 'universities collaborating']] },
+      { short: 'Now', k: 'in the works', h: "What I'm working on", body: [
+        { p: "The storybooks are still being developed, so I'm not writing up results yet. Right now I'm helping with:" },
+        { list: ['[for example: illustrating characters for the storybooks]', '[another small project with the team]'] },
       ] },
     ],
   },
@@ -40,15 +33,21 @@ export const CASES = {
   ai4all: {
     title: 'Computing and AI for All: A Teacher-First AI Curriculum',
     short: 'Computing and AI for All',
-    one: 'Building AI literacy lessons for 6th to 8th graders, with one shared structure that makes every lesson easy for teachers to run.',
+    one: 'AI literacy lessons for 6th to 8th graders: lesson structure, slides, plans, and workbooks, plus design feedback and testing for the CreatiCode platform.',
     year: 'Summer 2026',
-    tags: ['Curriculum Design', 'AI Literacy', 'Education'],
-    role: 'Curriculum Designer [confirm]',
+    lab: 'UCI Digital Learning Lab',
+    tags: ['Curriculum Design', 'Research', 'Platform Testing'],
+    role: 'Curriculum Designer, Researcher',
     timeline: 'June 2026 - August 2026',
-    tools: '-',
-    team: 'UCI Digital Learning Lab, led by Prof. Mark Warschauer',
-    lede: 'Computing and AI for All is an initiative at UCI that teaches AI literacy to middle schoolers in Orange County school districts. Students build with AI on the CreatiCode platform. I design the teacher guides, slide decks, student workbooks, and rubrics.',
-    owned: ['Teacher guides, slide decks, and student workbooks', 'Rubrics for every project lesson', 'The shared template every lesson now follows'],
+    tools: '[tools you used]',
+    team: 'Computing and AI for All · led by Prof. Mark Warschauer',
+    lede: 'Computing and AI for All teaches AI literacy to middle schoolers in Orange County school districts. Students build with AI on the CreatiCode platform. I designed the lesson structure and materials, and I helped the team improve the platform itself through design feedback and testing.',
+    owned: [
+      'Lesson structure, lesson plans, slide decks, and student workbooks',
+      'Rubrics for every project lesson',
+      'Design feedback and testing for the CreatiCode platform',
+      'Research that shaped the curriculum',
+    ],
     hero: { src: '/work/AI-for-all/images/hero.png', caption: 'A teacher guide and slide spread' },
     notes: [
       { short: 'Context', k: 'context', h: 'Middle schoolers building with AI', body: [
@@ -64,8 +63,12 @@ export const CASES = {
         { decision: { b: 'Rubrics as their own files.', p: 'Rubrics live in standalone files so teachers can attach them straight to Google Classroom, with a comments row for feedback.' } },
         { img: { src: '/work/AI-for-all/images/template.png', caption: 'The lesson template' } },
       ] },
-      { short: 'Solution', k: 'solution', h: 'Guides teachers can pick up and run', body: [
-        { p: 'A consistent set of teacher guides, slides, workbooks, and rubrics, plus reusable templates for revising the next lesson.' },
+      { short: 'Platform', k: 'platform', h: 'Helping shape CreatiCode', body: [
+        { p: '[2–3 sentences: what you tested on CreatiCode, the design feedback you gave, and anything that changed because of it.]' },
+        { img: { src: '/work/AI-for-all/images/platform.png', caption: 'CreatiCode' } },
+      ] },
+      { short: 'Solution', k: 'solution', h: 'Lessons teachers can pick up and run', body: [
+        { p: 'A consistent set of lesson plans, slides, workbooks, and rubrics, plus reusable templates for the next round of lessons.' },
         { img: { src: '/work/AI-for-all/images/spreads.png', caption: 'Example spreads' } },
       ] },
       { short: 'Outcome', k: 'outcome', h: 'What changed', body: [

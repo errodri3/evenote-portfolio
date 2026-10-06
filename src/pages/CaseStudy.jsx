@@ -147,10 +147,16 @@ function CaseStudyPage({ id }) {
 
         {/* Overview note */}
         <section className="cs-note" ref={(el) => { noteRefs.current[0] = el }}>
-          <span className="eyebrow">selected work · <Ph>{c.year}</Ph></span>
+          <span className="eyebrow">
+            selected work · <Ph>{c.year}</Ph>{c.lab && <> · {c.lab}</>}
+          </span>
+          {c.status && <span className="status-badge">🚧 {c.status}</span>}
           <h1 className="cs-title">{c.title}</h1>
           <p className="cs-lede"><Ph>{c.lede}</Ph></p>
           <div className="tags">{c.tags.map((t) => <span key={t} className="tag">{t}</span>)}</div>
+          {c.link && (
+            <a className="site-btn" href={c.link.href} target="_blank" rel="noopener">{c.link.label} ↗</a>
+          )}
           <dl className="meta">
             <div><dt>role</dt><dd><Ph>{c.role}</Ph></dd></div>
             <div><dt>timeline</dt><dd><Ph>{c.timeline}</Ph></dd></div>

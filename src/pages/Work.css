@@ -11,6 +11,8 @@
 .work-one { display: block; margin: 0 0 12px; color: var(--muted); max-width: 60ch; }
 .read { display: block; font-weight: 800; color: var(--green-dk); margin-top: 14px; }
 
+.work-meta .status-badge { display: inline-block; margin-left: 8px; padding: 1px 9px; border-radius: 999px; background: #FFF1C2; border: 2px solid #EFD34A; font-size: 12px; font-weight: 800; color: #7A5B00; }
+
 @media (max-width: 820px) {
   .work-row { grid-template-columns: 1fr; }
 }
