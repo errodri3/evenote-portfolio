@@ -22,9 +22,9 @@ export const TOOLBOX = [
 // [verb, what]
 export const OUTSIDE = [
   ['playing', 'Magic: The Gathering, Riftbound'],
-  ['drawing', '[link to my art]'],
-  ['listening', '[your Spotify link]'],
-  ['making', '[link to my side projects]'],
+  ['drawing', 'coming soon'],
+  ['listening', 'https://open.spotify.com/playlist/4ifXQgdnknl15Ry98ibCga?si=8c313e3eb349476d'],
+  ['making', 'coming soon'],
 ]
 
 // Your links. Leave as '' until you have them.
@@ -33,7 +33,7 @@ export const LINKS = {
   email: 'errodri3@uci.edu',
   github: 'https://github.com/errodri3',
   instagram: '',
-  resume: '',
+  resume: '/resume.pdf',
   playlist: '',
 }
 
