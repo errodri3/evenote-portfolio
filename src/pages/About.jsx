@@ -28,8 +28,7 @@ export default function About() {
         </div>
 
         <figure className="polaroid">
-          {/* later: <img src={photo} alt="Eve" /> */}
-          <div className="polaroid-img">[your photo]</div>
+          <img src="/me.jpg" alt="Eve @ Birch Aquarium" />
           <figcaption>Hi! I'm Eve</figcaption>
         </figure>
       </div>
