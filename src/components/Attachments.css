@@ -96,3 +96,12 @@
   .av-lid { padding: 5cqw 4cqw 4cqw; }
   .av-bot { aspect-ratio: auto; min-height: 46cqw; }
 }
+
+/* ---------- "Attached to this note" section (its own section, not a note) ---------- */
+.attach-sec { padding: 26px 28px; border-radius: 18px; border: 3px dashed var(--line); background: #FFFDF3; }
+.attach-sec h2 { margin: 2px 0 6px; font-size: 26px; font-weight: 800; }
+
+/* ---------- full screen for slides ---------- */
+.av-top:fullscreen { border: 0; margin: 0; border-radius: 0; background: #000; }
+.av-top:fullscreen img { background: #000; }
+.av-top:-webkit-full-screen { border: 0; margin: 0; border-radius: 0; background: #000; }

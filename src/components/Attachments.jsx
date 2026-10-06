@@ -5,8 +5,26 @@ import './Attachments.css'
 const pad = (n) => String(n).padStart(2, '0')
 const clock = (s) => `${Math.floor(s / 60)}:${pad(Math.floor(s % 60))}`
 
+// small reusable icons
+const ICON = {
+  left: <path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />,
+  right: <path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />,
+  play: <path d="M7 4l13 8-13 8z" fill="currentColor" />,
+  pause: <path d="M8 5v14M16 5v14" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />,
+  expand: <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />,
+}
+const Icon = ({ name }) => <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">{ICON[name]}</svg>
+
+// make any element full screen (works for the slide screen and the video)
+function goFullscreen(el) {
+  if (!el) return
+  if (el.requestFullscreen) el.requestFullscreen()
+  else if (el.webkitEnterFullscreen) el.webkitEnterFullscreen() // iPhone video
+  else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen()
+}
+
 // ---------- the pop-up handheld ----------
-function Viewer({ files, mode, setMode, onClose }) {
+export function Viewer({ files, mode, setMode, onClose }) {
   const { slides, video } = files
   const list = slides
     ? Array.from({ length: slides.count }, (_, k) => `${slides.folder}${pad(k + 1)}.${slides.ext}`)
@@ -17,6 +35,7 @@ function Viewer({ files, mode, setMode, onClose }) {
   const [time, setTime] = useState(0)
   const [dur, setDur] = useState(0)
   const vidRef = useRef(null)
+  const screenRef = useRef(null)
   const closeRef = useRef(null)
   const stripRef = useRef(null)
 
@@ -28,10 +47,10 @@ function Viewer({ files, mode, setMode, onClose }) {
     return () => { document.body.style.overflow = ''; opener?.focus?.() }
   }, [])
 
-  // Escape closes, arrow keys flip slides
+  // Escape closes (unless we're in full screen), arrow keys flip slides
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === 'Escape') onClose()
+      if (e.key === 'Escape' && !document.fullscreenElement) onClose()
       if (mode === 'slides' && e.key === 'ArrowRight') setI((n) => Math.min(list.length - 1, n + 1))
       if (mode === 'slides' && e.key === 'ArrowLeft') setI((n) => Math.max(0, n - 1))
     }
@@ -39,25 +58,24 @@ function Viewer({ files, mode, setMode, onClose }) {
     return () => window.removeEventListener('keydown', onKey)
   }, [mode, list.length, onClose])
 
-  // keep the current preview centered in the strip, and preload the next slide
+  // keep the current preview in view inside the strip, and preload the next slide
   useEffect(() => {
-    stripRef.current?.querySelector('.av-th.on')?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' })
+    const strip = stripRef.current
+    const on = strip?.querySelector('.av-th.on')
+    if (strip && on) {
+      const offset = on.getBoundingClientRect().left - strip.getBoundingClientRect().left
+      strip.scrollTo({ left: strip.scrollLeft + offset - strip.clientWidth / 2 + on.clientWidth / 2, behavior: 'smooth' })
+    }
     if (list[i + 1]) new Image().src = list[i + 1]
   }, [i, mode]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // switching tabs resets the video
-  useEffect(() => { setPlaying(false); setTime(0) }, [mode])
+  const switchTo = (m) => { setPlaying(false); setTime(0); setMode(m) }
 
   const togglePlay = () => {
     const v = vidRef.current
     if (!v) return
     v.paused ? v.play() : v.pause()
-  }
-  const fullscreen = () => {
-    const v = vidRef.current
-    if (!v) return
-    if (v.requestFullscreen) v.requestFullscreen()
-    else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen() // iPhone
   }
 
   return (
@@ -67,7 +85,7 @@ function Viewer({ files, mode, setMode, onClose }) {
         {/* top half: the big screen */}
         <div className="av-lid">
           <span className="av-cam" aria-hidden="true" />
-          <div className="av-top">
+          <div className="av-top" ref={screenRef}>
             {mode === 'slides' ? (
               <>
                 <img src={list[i]} alt={`Slide ${i + 1} of ${list.length}`} />
@@ -109,29 +127,27 @@ function Viewer({ files, mode, setMode, onClose }) {
           <div className="av-bot">
             {slides && video && (
               <div className="av-tabs">
-                <button className="av-tab" type="button" aria-pressed={mode === 'slides'} onClick={() => setMode('slides')}>📎 Slides</button>
-                <button className="av-tab" type="button" aria-pressed={mode === 'video'} onClick={() => setMode('video')}>▶ Video</button>
+                <button className="av-tab" type="button" aria-pressed={mode === 'slides'} onClick={() => switchTo('slides')}>📎 Slides</button>
+                <button className="av-tab" type="button" aria-pressed={mode === 'video'} onClick={() => switchTo('video')}>▶ Video</button>
               </div>
             )}
 
             {mode === 'slides' ? (
               <>
+                {/* clickable slide previews */}
                 <div className="av-strip" ref={stripRef}>
                   {list.map((src, k) => (
                     <button key={src} className={'av-th' + (k === i ? ' on' : '')} type="button"
-                      aria-label={`Slide ${k + 1}`} onClick={() => setI(k)}>
+                      aria-label={`Slide ${k + 1}`} aria-current={k === i} onClick={() => setI(k)}>
                       <img src={src} alt="" loading="lazy" />
                     </button>
                   ))}
                 </div>
                 <div className="av-ctrl">
-                  <button className="av-rb" type="button" aria-label="Previous slide" disabled={i === 0} onClick={() => setI(i - 1)}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                  </button>
+                  <button className="av-rb" type="button" aria-label="Previous slide" disabled={i === 0} onClick={() => setI(i - 1)}><Icon name="left" /></button>
                   <span className="av-count">{i + 1} / {list.length}</span>
-                  <button className="av-rb" type="button" aria-label="Next slide" disabled={i === list.length - 1} onClick={() => setI(i + 1)}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                  </button>
+                  <button className="av-rb" type="button" aria-label="Next slide" disabled={i === list.length - 1} onClick={() => setI(i + 1)}><Icon name="right" /></button>
+                  <button className="av-rb" type="button" aria-label="Full screen" onClick={() => goFullscreen(screenRef.current)}><Icon name="expand" /></button>
                   <button className="av-close" type="button" ref={closeRef} onClick={onClose}>Close</button>
                 </div>
               </>
@@ -145,13 +161,9 @@ function Viewer({ files, mode, setMode, onClose }) {
                 </div>
                 <div className="av-ctrl">
                   <button className="av-rb" type="button" aria-label={playing ? 'Pause' : 'Play'} onClick={togglePlay}>
-                    {playing
-                      ? <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14" stroke="currentColor" strokeWidth="3" strokeLinecap="round" /></svg>
-                      : <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l13 8-13 8z" fill="currentColor" /></svg>}
+                    <Icon name={playing ? 'pause' : 'play'} />
                   </button>
-                  <button className="av-rb" type="button" aria-label="Full screen" onClick={fullscreen}>
-                    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                  </button>
+                  <button className="av-rb" type="button" aria-label="Full screen" onClick={() => goFullscreen(vidRef.current)}><Icon name="expand" /></button>
                   <button className="av-close" type="button" ref={closeRef} onClick={onClose}>Close</button>
                 </div>
               </>
@@ -164,20 +176,18 @@ function Viewer({ files, mode, setMode, onClose }) {
   )
 }
 
-// ---------- the section on the case study page ----------
-export default function Attachments({ files }) {
-  const [open, setOpen] = useState(null) // null | 'slides' | 'video'
+// ---------- the "Attached to this note" section at the end of the page ----------
+export default function Attachments({ files, onOpen }) {
   const { slides, video, pdf } = files
 
   return (
-    <section className="cs-sec">
-      <span className="eyebrow">attached to this note</span>
+    <section className="attach-sec" id="attachments" aria-label="Attachments">
+      <span className="eyebrow">📎 attached to this note</span>
       <h2>See the full case study</h2>
-      <p>Flip through our demo day slides or watch the app in action.</p>
 
       <div className="attach">
         {slides && (
-          <button className="stamp" type="button" onClick={() => setOpen('slides')}>
+          <button className="stamp" type="button" onClick={() => onOpen('slides')}>
             <span className="clip" aria-hidden="true" />
             <span className="stamp-img"><img src={`${slides.folder}01.${slides.ext}`} alt="" /></span>
             <span className="stamp-t">📎 Case study slides</span>
@@ -185,7 +195,7 @@ export default function Attachments({ files }) {
           </button>
         )}
         {video && (
-          <button className="stamp" type="button" onClick={() => setOpen('video')}>
+          <button className="stamp" type="button" onClick={() => onOpen('video')}>
             <span className="clip" aria-hidden="true" />
             <span className="stamp-img">
               <img src={video.poster} alt="" />
@@ -204,8 +214,6 @@ export default function Attachments({ files }) {
         {pdf && <a href={pdf} download>Download PDF ↓</a>}
         {video && <a href={video.src} target="_blank" rel="noopener">Watch video in a new tab ↗</a>}
       </div>
-
-      {open && <Viewer files={files} mode={open} setMode={setOpen} onClose={() => setOpen(null)} />}
     </section>
   )
 }
