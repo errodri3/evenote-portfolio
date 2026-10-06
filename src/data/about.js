@@ -33,7 +33,7 @@ export const LINKS = {
   email: 'errodri3@uci.edu',
   github: 'https://github.com/errodri3',
   instagram: '',
-  resume: '/resume.pdf',
+  resume: '/Evelyn-Rodriguez-R.pdf',
   playlist: '',
 }
 
