@@ -53,9 +53,6 @@ export default function Home({ onBack }) {
     return () => { clearTimeout(slide); clearTimeout(done) }
   }, [arriving, secretAt])
 
-  // first thing the mascot says, until you move to another note
-  const [greet, setGreet] = useState(!mail.delivered)
-  if (greet && (sel !== START_NOTE || arriving)) setGreet(false)
 
   // slide show: move to the next note every few seconds
   useEffect(() => {
@@ -145,9 +142,7 @@ export default function Home({ onBack }) {
   // what the mascot says / what shows under the wave for the picked note
   const note = notes[Math.min(sel, last)]
   const sealed = note.secret && !mail.opened
-  const tip = greet
-    ? "Hi! Psst... make sure to check ALL my notes for something cool."
-    : arriving
+  const tip = arriving
       ? 'Ooh! Something just came in the mail...'
       : sealed ? 'A new note just came in for you! Tap it to open.' : note.tip
 

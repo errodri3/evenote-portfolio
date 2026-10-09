@@ -5,6 +5,31 @@
   background: #F3F7EA; border-right: 2px solid var(--line);
 }
 .side-close { display: none; }
+
+/* logo + speech bubble */
+.side-logo-wrap { position: relative; align-self: flex-start; }
+.side-logo { display: block; padding: 4px; border: 0; border-radius: 18px; background: none; transition: transform .25s cubic-bezier(.3, 1.4, .5, 1); }
+.side-logo:hover, .side-logo.talking { transform: rotate(-6deg) scale(1.06); }
+.side-bubble {
+  position: fixed; left: var(--x); top: var(--y); z-index: 45;
+  transform: translateY(-50%);
+  width: max-content; max-width: 280px;
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 12px 16px; border-radius: 12px;
+  background: #fff; border: 2px solid var(--green-dk);
+  box-shadow: 0 8px 20px rgba(47, 58, 44, .15);
+  animation: bubble-in .25s cubic-bezier(.3, 1.4, .5, 1);
+}
+.side-bubble::before {   /* little tail pointing at the logo */
+  content: ""; position: absolute; left: -9px; top: 50%; width: 14px; height: 14px; margin-top: -7px;
+  background: #fff; border-left: 2px solid var(--green-dk); border-bottom: 2px solid var(--green-dk);
+  transform: rotate(45deg);
+}
+.side-bubble::after { content: ""; position: absolute; left: -22px; top: 0; bottom: 0; width: 22px; }   /* lets the mouse cross over to the bubble */
+.side-bubble b { font-size: 16px; line-height: 1.3; }
+.side-bubble span { font-size: 14px; color: var(--muted); }
+.side-bubble a { font-size: 14px; font-weight: 700; color: var(--green-dk); }
+@keyframes bubble-in { from { opacity: 0; transform: translate(-8px, -50%) scale(.9); } }
 .side-name { font-family: var(--hand); font-weight: 700; font-size: 52px; line-height: .9; }
 .side-quote { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.6; }
 .side-roles { margin: 0; display: flex; flex-direction: column; gap: 14px; }
@@ -25,6 +50,10 @@
     box-shadow: 8px 0 24px rgba(0,0,0,.12);
   }
   .side.open { transform: none; }
+  /* in the slide-out panel, the bubble sits under the logo instead */
+  .side-bubble { position: absolute; left: 0; top: calc(100% + 12px); transform: none; max-width: min(260px, 70vw); }
+  .side-bubble::before { left: 26px; top: -9px; margin-top: 0; transform: rotate(135deg); }
+  @keyframes bubble-in { from { opacity: 0; transform: translateY(-6px) scale(.95); } }
   .side-close {
     display: grid; place-items: center; align-self: flex-start;
     width: 44px; height: 44px; border-radius: 12px; border: 2px solid var(--line); background: #fff;

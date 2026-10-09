@@ -46,3 +46,18 @@ export const SIDEBAR = {
     ['@DREAMS FOR SCHOOLS', 'STEAM Instructor'],
   ],
 }
+// What your logo says when someone hovers over it in the side panel.
+// It shows the next one every time. Add, remove, or reorder freely.
+//   t    = the bold line
+//   s    = a smaller second line (optional)
+//   link = [text, where it goes] (optional). Use a /page or a full https:// link.
+export const MASCOT_LINES = [
+  { t: 'psst... check ALL my notes', s: 'something cool is hiding in here' },
+  { t: 'open to summer 2027 internships!', s: 'UX/UI, product design, front end', link: ['say hi →', '/write'] },
+  { t: 'I started drawing on a 3DS', s: 'in Swapnote, when I was seven' },
+  { t: 'I also make playlists', link: ['open spotify ↗', LINKS.playlist] },
+  { t: 'STEAM instructor by day', s: 'teaching kids to code + build robots' },
+  { t: 'Magic: The Gathering player', s: 'ask me about my deck' },
+  { t: 'now @ UCI Digital Learning Lab', s: 'designing AI storybooks for kids' },
+  { t: 'graduating June 2027,', s: 'next: you?', link: ['see my resume ↗', LINKS.resume] },
+]
