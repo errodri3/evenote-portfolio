@@ -51,7 +51,7 @@ export const MASCOT_LINES = [
   { t: 'psst... check ALL my notes', s: 'something cool is hiding in here' },
   { t: 'open to summer 2027 internships!', s: 'UX/UI, product design, front end', link: ['say hi →', '/write'] },
   { t: 'I started drawing on a 3DS', s: 'in Swapnote, because i was bored' },
-  { t: 'Magic: The Gathering player', s: 'ask me about my deck' },
+  { t: 'Magic: The Gathering player', s: 'ask me about my decks' },
   { t: 'now @ UCI Digital Learning Lab', s: 'designing AI storybooks for kids' },
-  { t: 'curr = graduating[June 2027]', s: 'nxt: you?'},
+  { t: "curr = UCI, class of '27", s: 'curr.next = null... you?' },
 ]
