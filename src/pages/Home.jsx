@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import Mascot from '../components/Mascot'
 import Ph from '../components/Ph'
 import { DEV, dateLine } from '../components/draft'
 import { markArrived, markDelivered, useMail } from '../components/mail'
@@ -139,12 +138,9 @@ export default function Home({ onBack }) {
     else setDialog('none-yet')
   }
 
-  // what the mascot says / what shows under the wave for the picked note
+  // what shows under the wave for the picked note
   const note = notes[Math.min(sel, last)]
   const sealed = note.secret && !mail.opened
-  const tip = arriving
-      ? 'Ooh! Something just came in the mail...'
-      : sealed ? 'A new note just came in for you! Tap it to open.' : note.tip
 
   return (
     <section className="home" aria-label="Home">
@@ -155,12 +151,6 @@ export default function Home({ onBack }) {
           <path d="M-20 120C150 30 300 30 460 110S780 200 940 120S1150 40 1220 90"
             fill="none" stroke="#CFE8B4" strokeWidth="54" strokeLinecap="round" opacity=".75" />
         </svg>
-
-        {/* mascot + speech bubble */}
-        <div className="bubble-row">
-          <Mascot className="bob" />
-          <div className="bubble" aria-live="polite">{tip}</div>
-        </div>
 
         {/* the notes */}
         <div className={'track' + (dragging ? ' dragging' : '')} ref={trackRef}
