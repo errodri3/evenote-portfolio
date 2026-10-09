@@ -55,7 +55,7 @@ function NewNotePopup() {
   if (!due || !ready) return null
   return (
     <NoteDialog text="You have a new note from Eve!" fresh
-      actions={[['Open it', () => { markDelivered(); navigate('/why') }], ['Later', markDelivered]]}
+      actions={[['Open it', () => { markDelivered(); navigate('/') }], ['Later', markDelivered]]}
       onClose={markDelivered} />
   )
 }

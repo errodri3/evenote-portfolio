@@ -1,8 +1,9 @@
 // The secret note, like getting a new note in Swapnote.
 //
 // Once someone has looked at the About page and at least PROJECTS_NEEDED projects,
-// a pop-up says they got a new note. The note (the Why page) stays "sealed"
-// on the home screen until they open it.
+// a pop-up says they got a new note. After that (Open it or Later), the next time
+// they're on the home screen the note flies in and lands on the wave as a sealed
+// envelope. Before that, it isn't on the wave at all.
 //
 // Progress is saved in the visitor's browser, so it remembers between visits.
 
@@ -15,7 +16,7 @@ const KEY = 'evenote-mail'
 function load() {
   try { return JSON.parse(localStorage.getItem(KEY)) || {} } catch { return {} }
 }
-let state = { visited: [], delivered: false, opened: false, ...load() }
+let state = { visited: [], delivered: false, arrived: false, opened: false, ...load() }
 const listeners = new Set()
 
 function save(next) {
@@ -32,7 +33,8 @@ export function markVisit(pathname) {
 }
 
 export const markDelivered = () => save({ delivered: true })
-export const markOpened = () => save({ delivered: true, opened: true })
+export const markArrived = () => save({ arrived: true })     // the arrival animation has played on the home screen
+export const markOpened = () => save({ delivered: true, arrived: true, opened: true })
 // for testing: run  localStorage.removeItem('evenote-mail')  in the browser console, then reload
 
 // is the note ready to be delivered?

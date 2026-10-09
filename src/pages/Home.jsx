@@ -3,28 +3,25 @@ import { Link, useNavigate } from 'react-router-dom'
 import Mascot from '../components/Mascot'
 import Ph from '../components/Ph'
 import { DEV, dateLine } from '../components/draft'
-import { useMail } from '../components/mail'
+import { markArrived, markDelivered, useMail } from '../components/mail'
 import NoteDialog from '../components/NoteDialog'
 import Thumb from '../components/Thumb'
 import { NOTES, START_NOTE } from '../data/notes'
 import './Home.css'
 
-const LAST = NOTES.length - 1
-
-// The secret note before it's opened: a sealed envelope (with a NEW tag once it's delivered)
-function Sealed({ fresh, shake }) {
+// The secret note before it's opened: a sealed envelope with a NEW tag
+function Sealed() {
   return (
-    <span className={'thumb sealed' + (shake ? ' shake' : '')}>
+    <span className="thumb sealed">
       <svg viewBox="0 0 100 60" aria-hidden="true">
         <path d="M22 14h56v34H22z" fill="#fff" stroke="#9CC8EE" strokeWidth="2.5" strokeLinejoin="round" />
         <path d="M22 14l28 20 28-20" fill="#EEF6FD" stroke="#9CC8EE" strokeWidth="2.5" strokeLinejoin="round" />
         <circle cx="50" cy="33" r="5" fill="#E0627A" />
       </svg>
-      {fresh && <span className="new-tag">NEW</span>}
+      <span className="new-tag">NEW</span>
     </span>
   )
 }
-const clamp = (i) => Math.max(0, Math.min(LAST, i))
 
 export default function Home({ onBack }) {
   const navigate = useNavigate()
@@ -39,19 +36,33 @@ export default function Home({ onBack }) {
   const [menu, setMenu] = useState(false)      // the ▼ menu next to Write a Note
   const [playing, setPlaying] = useState(false) // slide show
   const [dialog, setDialog] = useState(null)   // Delivery Check message
-  const [wiggle, setWiggle] = useState(false)  // sealed note shakes when it can't open yet
   const mail = useMail()
 
+  // the secret note is only on the wave once it's been delivered (see components/mail.js)
+  const notes = NOTES.filter((n) => !n.secret || mail.delivered)
+  const last = notes.length - 1
+  const clamp = (i) => Math.max(0, Math.min(last, i))
+  const secretAt = notes.findIndex((n) => n.secret)
+
+  // the note was just delivered: play the arrival once, then slide over to it
+  const arriving = mail.delivered && !mail.arrived
+  useEffect(() => {
+    if (!arriving) return
+    const slide = setTimeout(() => setSel(secretAt), 450)
+    const done = setTimeout(markArrived, 2600)
+    return () => { clearTimeout(slide); clearTimeout(done) }
+  }, [arriving, secretAt])
+
   // first thing the mascot says, until you move to another note
-  const [greet, setGreet] = useState(!mail.opened)
-  if (greet && sel !== START_NOTE) setGreet(false)
+  const [greet, setGreet] = useState(!mail.delivered)
+  if (greet && (sel !== START_NOTE || arriving)) setGreet(false)
 
   // slide show: move to the next note every few seconds
   useEffect(() => {
     if (!playing) return
-    const t = setInterval(() => setSel((s) => (s + 1) % NOTES.length), 2600)
+    const t = setInterval(() => setSel((s) => (s + 1) % notes.length), 2600)
     return () => clearInterval(t)
-  }, [playing])
+  }, [playing, notes.length])
 
   // spacing depends on screen size
   const small = width < 620
@@ -73,12 +84,12 @@ export default function Home({ onBack }) {
     const onKey = (e) => {
       if (e.key === 'Escape') setMenu(false)
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') setPlaying(false)
-      if (e.key === 'ArrowLeft') setSel((s) => clamp(s - 1))
-      if (e.key === 'ArrowRight') setSel((s) => clamp(s + 1))
+      if (e.key === 'ArrowLeft') setSel((s) => Math.max(0, s - 1))
+      if (e.key === 'ArrowRight') setSel((s) => Math.min(last, s + 1))
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [])
+  }, [last])
 
   // dragging the wave
   function onPointerDown(e) {
@@ -100,7 +111,7 @@ export default function Home({ onBack }) {
       if (d.x === null) return
       if (d.moved) {
         const step = Math.round(-d.off)
-        setSel((s) => clamp(s + step))
+        setSel((s) => Math.max(0, Math.min(last, s + step)))
         setDragOff(0)
         setTimeout(() => { d.moved = false }, 0) // so the drag doesn't count as a click
       }
@@ -113,37 +124,32 @@ export default function Home({ onBack }) {
       window.removeEventListener('pointermove', move)
       window.removeEventListener('pointerup', up)
     }
-  }, [gap])
+  }, [gap, last])
 
   // click once to pick a note, click the picked note to open it
   function clickNote(i) {
     if (drag.current.moved) return
     if (i !== sel) return setSel(i)
-    const n = NOTES[i]
-    if (n.secret && !mail.unlocked) {            // still sealed: give it a little shake
-      setWiggle(true)
-      setTimeout(() => setWiggle(false), 500)
-      return
-    }
-    navigate(n.to)
+    navigate(notes[i].to)
   }
 
   // ▼ menu: Delivery Check (like SpotPass in Swapnote)
   function deliveryCheck() {
     setMenu(false)
-    if (mail.unlocked && !mail.opened) setDialog('new')
+    if (mail.unlocked && !mail.delivered) markDelivered()      // it arrives right now, with the animation
+    else if (mail.delivered && !mail.opened) setDialog('waiting')
     else if (mail.opened) setDialog('none-read')
     else setDialog('none-yet')
   }
 
   // what the mascot says / what shows under the wave for the picked note
-  const note = NOTES[sel]
+  const note = notes[Math.min(sel, last)]
   const sealed = note.secret && !mail.opened
   const tip = greet
     ? "Hi! Psst... make sure to check ALL my notes for something cool."
-    : sealed
-      ? (mail.unlocked ? 'A new note just came in for you! Tap it to open.' : "Shh... this one's still sealed. Look around my notes first!")
-      : note.tip
+    : arriving
+      ? 'Ooh! Something just came in the mail...'
+      : sealed ? 'A new note just came in for you! Tap it to open.' : note.tip
 
   return (
     <section className="home" aria-label="Home">
@@ -164,7 +170,7 @@ export default function Home({ onBack }) {
         {/* the notes */}
         <div className={'track' + (dragging ? ' dragging' : '')} ref={trackRef}
           onPointerDown={onPointerDown} style={{ '--nw': noteW + 'px' }}>
-          {NOTES.map((n, i) => {
+          {notes.map((n, i) => {
             const off = i - sel + dragOff
             const dist = Math.abs(off)
             const on = i === sel
@@ -188,9 +194,10 @@ export default function Home({ onBack }) {
                 onClick={() => clickNote(i)}
               >
                 <span className="brk" aria-hidden="true"><i /><i /><i /><i /></span>
-                {n.secret && !mail.opened
-                  ? <Sealed fresh={mail.unlocked} shake={on && wiggle} />
-                  : <Thumb note={n} />}
+                {n.secret && arriving && <span className="burst" aria-hidden="true">{Array.from({ length: 8 }, (_, k) => <i key={k} style={{ '--a': `${k * 45}deg` }} />)}</span>}
+                <span className={n.secret && arriving ? 'arrive' : undefined} style={{ display: 'block' }}>
+                  {n.secret && !mail.opened ? <Sealed /> : <Thumb note={n} />}
+                </span>
               </button>
             )
           })}
@@ -198,7 +205,7 @@ export default function Home({ onBack }) {
 
         {/* title of the picked note */}
         <div className="sel-meta">
-          <div className="sel-title">{sealed ? (mail.unlocked ? 'New note from Eve!' : 'Sealed note') : note.title}</div>
+          <div className="sel-title">{sealed ? 'New note from Eve!' : note.title}</div>
           <div className="sel-sub">{!sealed && <Ph>{dateLine(note.dates)}</Ph>}</div>
         </div>
 
@@ -207,7 +214,7 @@ export default function Home({ onBack }) {
           <button className="round" type="button" aria-label="Previous note" onClick={() => setSel(clamp(sel - 1))}>
             <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </button>
-          <input className="scrubber" type="range" min="0" max={LAST} step="1" value={sel}
+          <input className="scrubber" type="range" min="0" max={last} step="1" value={sel}
             aria-label="Scroll through notes" onChange={(e) => setSel(+e.target.value)} />
           <button className="round" type="button" aria-label="Next note" onClick={() => setSel(clamp(sel + 1))}>
             <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -245,9 +252,9 @@ export default function Home({ onBack }) {
           </span>
         </div>
 
-        {dialog === 'new' && (
-          <NoteDialog text="You have a new note from Eve!" fresh
-            actions={[['Open it', () => navigate('/why')], ['Later', () => setDialog(null)]]} onClose={() => setDialog(null)} />
+        {dialog === 'waiting' && (
+          <NoteDialog text="Your new note from Eve is waiting on the wave. Look for the NEW tag!"
+            actions={[['Show me', () => { setSel(secretAt); setDialog(null) }]]} onClose={() => setDialog(null)} />
         )}
         {dialog === 'none-yet' && (
           <NoteDialog text="No new notes yet. Look around my About page and projects, then check again!"

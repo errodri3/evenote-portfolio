@@ -95,8 +95,29 @@
 .thumb.sealed svg { width: 72%; height: auto; }
 .new-tag { position: absolute; top: 6%; right: 5%; padding: 1px 7px; border-radius: 6px; background: #79B3E3; color: #fff; font-size: 11px; font-weight: 800; letter-spacing: .06em; animation: new-blink 1.4s ease-in-out infinite; }
 @keyframes new-blink { 50% { opacity: .55; } }
-.thumb.sealed.shake { animation: shake .45s ease; }
-@keyframes shake { 20%, 60% { transform: rotate(-4deg); } 40%, 80% { transform: rotate(4deg); } }
+
+/* the new note flying in and landing on the wave */
+.arrive { animation: arrive 1.25s cubic-bezier(.25, 1, .4, 1) .55s both; }
+@keyframes arrive {
+  0%   { transform: translate(420px, -360px) rotate(35deg) scale(.25); opacity: 0; }
+  15%  { opacity: 1; }
+  55%  { transform: translate(-30px, 20px) rotate(-8deg) scale(1.08); }
+  75%  { transform: translate(8px, -6px) rotate(3deg) scale(.97); }
+  100% { transform: none; opacity: 1; }
+}
+/* little burst of sparkles when it lands */
+.burst { position: absolute; left: 50%; top: 50%; width: 0; height: 0; z-index: 3; pointer-events: none; }
+.burst i {
+  position: absolute; left: -5px; top: -5px; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--yellow); box-shadow: 0 0 0 3px #fff;
+  opacity: 0; animation: burst .7s ease-out 1.25s both;
+}
+.burst i:nth-child(even) { background: #9CC8EE; width: 8px; height: 8px; }
+@keyframes burst {
+  0%   { opacity: 1; transform: rotate(var(--a)) translateY(0) scale(.4); }
+  100% { opacity: 0; transform: rotate(var(--a)) translateY(-120px) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) { .arrive, .burst i { animation: none; } }
 
 .write-bar {
   width: 300px; height: 56px;
