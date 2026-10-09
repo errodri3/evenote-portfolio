@@ -23,18 +23,18 @@ export const TOOLBOX = [
 export const OUTSIDE = [
   ['playing', 'Magic: The Gathering, Riftbound'],
   ['drawing', 'coming soon'],
-  ['listening', 'https://open.spotify.com/playlist/4ifXQgdnknl15Ry98ibCga?si=8c313e3eb349476d'],
+  ['listening', 'to my playlist', 'https://open.spotify.com/playlist/4ifXQgdnknl15Ry98ibCga'],   // 3rd item = optional link
   ['making', 'coming soon'],
 ]
 
 // Your links. Leave as '' until you have them.
 export const LINKS = {
-  linkedin: 'www.linkedin.com/in/evelyn-rodriguez-r',
+  linkedin: 'https://www.linkedin.com/in/evelyn-rodriguez-r',
   email: 'errodri3@uci.edu',
   github: 'https://github.com/errodri3',
   instagram: '',
   resume: '/Evelyn_Rodriguez_Resume_2026.pdf',
-  playlist: '',
+  playlist: 'https://open.spotify.com/playlist/4ifXQgdnknl15Ry98ibCga',
 }
 
 // Side panel: quick brief about you

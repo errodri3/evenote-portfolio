@@ -65,7 +65,12 @@ export default function About() {
       <div className="ab-sec">
         <h2 className="ab-label">outside of work you can find me...</h2>
         <ul className="out-list">
-          {OUTSIDE.map(([verb, what]) => <li key={verb}><b>{verb}</b> <Ph>{what}</Ph></li>)}
+          {OUTSIDE.map(([verb, what, link]) => (
+            <li key={verb}>
+              <b>{verb}</b>{' '}
+              {link ? <a className="ulink" href={link} target="_blank" rel="noopener">{what} ↗</a> : <Ph>{what}</Ph>}
+            </li>
+          ))}
         </ul>
       </div>
 

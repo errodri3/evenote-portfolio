@@ -17,15 +17,19 @@ export default function Home({ onBack }) {
   const [dragOff, setDragOff] = useState(0)    // how far you've dragged (in notes)
   const [dragging, setDragging] = useState(false)
   const [width, setWidth] = useState(900)      // width of the wave area
+  const [scale, setScale] = useState(1)        // 1 on laptops, bigger on big screens (see html font-size in index.css)
 
   // spacing depends on screen size
   const small = width < 620
-  const noteW = small ? 150 : 220
-  const gap = small ? Math.min(165, width * 0.44) : 260
+  const noteW = (small ? 150 : 220) * scale
+  const gap = small ? Math.min(165, width * 0.44) : 260 * scale
 
-  // keep track of the wave area's width when the window resizes
+  // keep track of the wave area's width (and the page scale) when the window resizes
   useEffect(() => {
-    const ro = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width))
+    const ro = new ResizeObserver(([entry]) => {
+      setWidth(entry.contentRect.width)
+      setScale(parseFloat(getComputedStyle(document.documentElement).fontSize) / 16)
+    })
     ro.observe(trackRef.current)
     return () => ro.disconnect()
   }, [])

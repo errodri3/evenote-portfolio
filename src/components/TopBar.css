@@ -21,4 +21,9 @@
   .menu-btn { display: grid; }
   .nav { margin-inline: auto 0; }
   .nav a { padding: 0 12px; }
+}/* small phones: keep the three links on one line */
+@media (max-width: 440px) {
+  .topbar { gap: 8px; }
+  .nav { flex-wrap: nowrap; gap: 2px; }
+  .nav a { padding: 0 9px; font-size: 14px; white-space: nowrap; }
 }
