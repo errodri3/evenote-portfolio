@@ -7,6 +7,7 @@
 // snip   = the 3 lines on the front of the note
 // doodle = heart, bubble, spark, phone, star, or brush (see Thumb.jsx)
 // ink/paper = doodle color / note paper color
+// secret = this note stays sealed until it's delivered (see components/mail.js)
 
 export const NOTES = [
   { title: "Hi, I'm Eve!", dates: '03/07/2005 - current', to: '/about', tip: "That's me! Open it to learn who I am.",
@@ -19,7 +20,7 @@ export const NOTES = [
     snip: ['Nudge', 'practice makes', 'confident!'], doodle: 'phone', ink: '#6A74E0', paper: '#EEF0FE' },
   { title: 'Playground', dates: '[MM/DD/YYYY] - current', to: '/playground', tip: 'Art, logos, and side projects. Just for fun!',
     snip: ['Playground', 'art, logos +', 'side projects'], doodle: 'brush', ink: '#D9622B', paper: '#FFF1E8' },
-  { title: 'Why Swapnote?', dates: '[MM/DD/YYYY] - current', to: '/why', tip: 'Why my portfolio looks like a note app.',
+  { title: 'Why Swapnote?', secret: true, dates: '[MM/DD/YYYY] - current', to: '/why', tip: 'Why my portfolio looks like a note app.',
     snip: ['Why', 'Swapnote?', 'where I started'], doodle: 'star', ink: '#C9921A', paper: '#FFF6DA' },
 ]
 

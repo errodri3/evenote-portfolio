@@ -1,0 +1,25 @@
+/* Swapnote-style message box: soft pink paper, green outline */
+.nd-shade { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; padding: 20px; background: rgba(30, 35, 28, .35); animation: nd-fade .2s ease; }
+.nd {
+  width: min(420px, 100%);
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  padding: 26px 24px 22px; text-align: center;
+  background: linear-gradient(180deg, #FFF6F3, #FBE9E4);
+  border: 3px solid #A9CF7E; border-radius: 22px;
+  box-shadow: inset 0 0 0 5px #fff, 0 18px 40px rgba(30, 35, 28, .25);
+  animation: nd-pop .35s cubic-bezier(.3, 1.4, .5, 1);
+}
+.nd-env { width: 120px; height: auto; animation: nd-arrive .9s cubic-bezier(.3, 1.2, .5, 1); }
+.nd-text { margin: 0; font-size: 21px; line-height: 1.35; color: var(--ink); text-wrap: balance; }
+.nd-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.nd-btn { min-width: 120px; height: 48px; padding: 0 20px; border-radius: 14px; border: 3px solid var(--green-dk); background: #fff; box-shadow: 0 4px 0 var(--green-dk); font-weight: 800; font-size: 16px; }
+.nd-btn.main { background: var(--green); }
+.nd-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--green-dk); }
+
+@keyframes nd-fade { from { opacity: 0; } }
+@keyframes nd-pop { from { transform: scale(.85); opacity: 0; } }
+@keyframes nd-arrive {
+  0% { transform: translate(-160px, -60px) rotate(-20deg) scale(.5); opacity: 0; }
+  60% { transform: translate(8px, 4px) rotate(4deg) scale(1.05); opacity: 1; }
+  100% { transform: none; }
+}

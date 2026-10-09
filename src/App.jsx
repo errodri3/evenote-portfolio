@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import Handheld from './components/Handheld'
 import Sidebar from './components/Sidebar'
 import TopBar from './components/TopBar'
@@ -11,6 +11,8 @@ import CaseStudy from './pages/CaseStudy'
 import Why from './pages/Why'
 import WriteNote from './pages/WriteNote'
 import Playground from './pages/Playground'
+import NoteDialog from './components/NoteDialog'
+import { markDelivered, markVisit, useMail } from './components/mail'
 
 // true when the screen matches a media query (e.g. small screens)
 function useMediaQuery(query) {
@@ -31,6 +33,31 @@ function ScrollToTop() {
     if (!hash) window.scrollTo(0, 0)
   }, [pathname, hash])
   return null
+}
+
+// "You have a new note from Eve!" pops up once someone has looked around enough
+function NewNotePopup() {
+  const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const mail = useMail()
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => { markVisit(pathname) }, [pathname])
+
+  // wait a moment after the page loads so it doesn't pop up instantly
+  const due = mail.unlocked && !mail.delivered && pathname !== '/why'
+  useEffect(() => {
+    if (!due) return
+    const t = setTimeout(() => setReady(true), 1400)
+    return () => clearTimeout(t)
+  }, [due])
+
+  if (!due || !ready) return null
+  return (
+    <NoteDialog text="You have a new note from Eve!" fresh
+      actions={[['Open it', () => { markDelivered(); navigate('/why') }], ['Later', markDelivered]]}
+      onClose={markDelivered} />
+  )
 }
 
 // Little green ring wherever someone taps/clicks, like a stylus
@@ -78,12 +105,12 @@ export default function App() {
   return (
     <div className="shell">
       <ScrollToTop />
+      <NewNotePopup />
       <TopBar menuOpen={menuOpen} onMenu={() => setMenuOpen(true)} />
       <Sidebar
         open={menuOpen}
         hidden={small && !menuOpen}   // hidden panels can't be tabbed into
         onClose={() => setMenuOpen(false)}
-        onHandheld={goHandheld}
       />
       {small && menuOpen && <div className="backdrop" onClick={() => setMenuOpen(false)} />}
 

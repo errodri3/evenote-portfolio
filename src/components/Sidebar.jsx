@@ -3,7 +3,7 @@ import { DEV } from './draft'
 import { SIDEBAR } from '../data/about'
 import './Sidebar.css'
 
-export default function Sidebar({ open, hidden, onClose, onHandheld }) {
+export default function Sidebar({ open, hidden, onClose }) {
   return (
     <aside id="sidebar" className={'side' + (open ? ' open' : '')} aria-label="About Eve" inert={hidden}>
       {/* X button, only shows on small screens */}
@@ -26,7 +26,6 @@ export default function Sidebar({ open, hidden, onClose, onHandheld }) {
       {/* (only shows on your computer until you add a drawing) */}
       {DEV ? <div className="side-art">[your drawing]</div> : <div className="side-spacer" />}
 
-      <button className="side-btn" type="button" onClick={onHandheld}>Back to handheld</button>
     </aside>
   )
 }

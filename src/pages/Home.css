@@ -47,23 +47,56 @@
 .scrubber::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; margin-top: -10px; border-radius: 50%; background: var(--green); border: 3px solid var(--ink); }
 .scrubber::-moz-range-thumb { width: 22px; height: 22px; border-radius: 50%; background: var(--green); border: 3px solid var(--ink); }
 
-/* bottom of the screen: Write a Note centered, back tile pinned to the left edge */
+/* bottom of the screen: Write a Note + the green ▼ menu button */
 .stage-bar {
-  position: relative; z-index: 3;
-  display: flex; align-items: center; justify-content: center;
+  position: relative; z-index: 6;
+  display: flex; align-items: center; justify-content: center; gap: 12px;
   padding: 6px 18px 22px;
 }
-.back-tile {
-  position: absolute; left: 18px; top: 6px;
-  width: 56px; height: 56px;
+.menu-tile {
+  width: 64px; height: 56px; flex: 0 0 auto;
   display: grid; place-items: center; padding: 0;
   border-radius: 14px; border: 3px solid var(--green-dk);
-  background: linear-gradient(180deg, #fff, #EEF7E2);
+  background: linear-gradient(180deg, #8ED05A, var(--green));
   box-shadow: 0 5px 0 var(--green-dk);
   transition: transform .12s, box-shadow .12s;
 }
-.back-tile:hover { transform: translateY(-2px); }
-.back-tile:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--green-dk); }
+.menu-tile:hover { transform: translateY(-2px); }
+.menu-tile:active, .menu-tile.on { transform: translateY(4px); box-shadow: 0 1px 0 var(--green-dk); }
+.menu-tile svg { transition: transform .25s; }
+.menu-tile.on svg { transform: rotate(180deg); }
+
+/* the pop-up menu: a speech bubble of big buttons, like Swapnote */
+.menu-shade { position: fixed; inset: 0; z-index: 1; }
+.menu-tile { position: relative; z-index: 2; }
+.menu-wrap { position: relative; display: flex; }
+.home-menu {
+  position: absolute; bottom: calc(100% + 16px); right: -8px; z-index: 2;
+  width: min(440px, calc(100vw - 48px));
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  padding: 14px; border-radius: 20px;
+  background: #F9F8F2; border: 3px solid #A9CF7E;
+  box-shadow: inset 0 0 0 4px #fff, 0 12px 28px rgba(30, 35, 28, .18);
+  animation: menu-pop .25s cubic-bezier(.3, 1.4, .5, 1);
+}
+.home-menu::after { content: ""; position: absolute; right: 30px; bottom: -12px; width: 20px; height: 20px; background: #F9F8F2; border-right: 3px solid #A9CF7E; border-bottom: 3px solid #A9CF7E; transform: rotate(45deg); }
+.home-menu button {
+  min-height: 70px; padding: 8px 10px; border-radius: 14px;
+  border: 2px solid #D9DCCF; background: linear-gradient(180deg, #fff, #EFEFEA);
+  box-shadow: 0 3px 0 #D9DCCF;
+  font-size: 17px; font-weight: 700; line-height: 1.2; color: var(--muted);
+}
+.home-menu button:hover:not(:disabled) { color: var(--ink); border-color: var(--green); }
+.home-menu button:disabled { opacity: .7; font-size: 14px; }
+@keyframes menu-pop { from { transform: translateY(10px) scale(.9); opacity: 0; } }
+
+/* the secret note while it's still sealed */
+.thumb.sealed { display: grid; place-items: center; background: #F4F9FE; }
+.thumb.sealed svg { width: 72%; height: auto; }
+.new-tag { position: absolute; top: 6%; right: 5%; padding: 1px 7px; border-radius: 6px; background: #79B3E3; color: #fff; font-size: 11px; font-weight: 800; letter-spacing: .06em; animation: new-blink 1.4s ease-in-out infinite; }
+@keyframes new-blink { 50% { opacity: .55; } }
+.thumb.sealed.shake { animation: shake .45s ease; }
+@keyframes shake { 20%, 60% { transform: rotate(-4deg); } 40%, 80% { transform: rotate(4deg); } }
 
 .write-bar {
   width: 300px; height: 56px;
@@ -78,11 +111,10 @@
 .write-bar:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--green-dk); }
 .write-bar .chk { width: 28px; height: 28px; border-radius: 7px; border: 2px solid var(--green-dk); background: #fff; display: grid; place-items: center; }
 
-/* narrow screens: put the back tile next to the button so they don't overlap */
+/* narrow screens: the Write button stretches to fill the row */
 @media (max-width: 560px) {
-  .stage-bar { gap: 12px; }
-  .back-tile { position: static; }
   .write-bar { width: auto; flex: 1; font-size: 17px; }
+  .home-menu button { font-size: 15px; min-height: 62px; }
 }
 
 /* note preview (landscape) */

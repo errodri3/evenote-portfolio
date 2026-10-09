@@ -16,8 +16,7 @@ export default function About() {
             learning: tools and stories for kids, lessons for teachers, and research on how people learn with AI.
           </p>
           <div className="ab-links">
-            <Link className="ulink" to="/why">why does this site look like a note app? →</Link>
-            <Link className="ulink" to="/why#how">curious how I built this site? →</Link>
+            <Link className="ulink" to="/why">why does everything look like a 3DS note app? →</Link>
           </div>
           <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
             {LINKS.resume
@@ -76,7 +75,6 @@ export default function About() {
 
       <div className="ab-end">
         <p>want to see what I've built? <Link className="ulink" to="/work">→ selected work</Link></p>
-        <p>curious why it looks like a note app? <Link className="ulink" to="/why">that's its own note →</Link></p>
       </div>
     </section>
   )
