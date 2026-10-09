@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Thumb from '../components/Thumb'
 import Ph from '../components/Ph'
+import { dateLine } from '../components/draft'
 import { CASES, ORDER } from '../data/cases'
 import { NOTES } from '../data/notes'
 import './Work.css'
@@ -25,7 +26,7 @@ export default function Work() {
               <Thumb note={noteFor(id)} />
               <span>
                 <span className="work-meta">
-                  <Ph>{c.year}</Ph>{c.lab && <> · {c.lab}</>}
+                  <Ph>{dateLine(noteFor(id)?.dates) || c.year}</Ph>{c.lab && <> · {c.lab}</>}
                   {c.status && <span className="status-badge">🚧 {c.status}</span>}
                 </span>
                 <span className="work-title">{c.title}</span>

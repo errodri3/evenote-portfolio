@@ -10,6 +10,7 @@ import Work from './pages/Work'
 import CaseStudy from './pages/CaseStudy'
 import Why from './pages/Why'
 import WriteNote from './pages/WriteNote'
+import Playground from './pages/Playground'
 
 // true when the screen matches a media query (e.g. small screens)
 function useMediaQuery(query) {
@@ -77,6 +78,7 @@ export default function App() {
   return (
     <div className="shell">
       <ScrollToTop />
+      <TopBar menuOpen={menuOpen} onMenu={() => setMenuOpen(true)} />
       <Sidebar
         open={menuOpen}
         hidden={small && !menuOpen}   // hidden panels can't be tabbed into
@@ -86,7 +88,6 @@ export default function App() {
       {small && menuOpen && <div className="backdrop" onClick={() => setMenuOpen(false)} />}
 
       <div className="main-col">
-        <TopBar menuOpen={menuOpen} onMenu={() => setMenuOpen(true)} />
         <main className="content">
           <Routes>
             <Route path="/" element={<Home onBack={goHandheld} />} />
@@ -95,6 +96,7 @@ export default function App() {
             <Route path="/work/:id" element={<CaseStudy />} />
             <Route path="/why" element={<Why />} />
             <Route path="/write" element={<WriteNote />} />
+            <Route path="/playground" element={<Playground />} />
           </Routes>
         </main>
         <Footer />

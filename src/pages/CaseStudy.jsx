@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import Thumb from '../components/Thumb'
 import Ph from '../components/Ph'
+import { DEV, shows } from '../components/draft'
 import Attachments, { Viewer } from '../components/Attachments'
 import { CASES, ORDER } from '../data/cases'
 import { noteFor } from './Work'
@@ -13,6 +14,7 @@ const pad = (n) => String(n).padStart(2, '0')
 // An image. If the file doesn't exist yet, shows a dashed box with the path to save it at.
 function Img({ src, caption, half }) {
   const [missing, setMissing] = useState(false)
+  if ((!src || missing) && !DEV) return null   // live site: no empty boxes
   if (!src || missing) {
     return (
       <figure className={'slot' + (half ? ' half' : '')}>
@@ -33,12 +35,22 @@ function Img({ src, caption, half }) {
 }
 
 // One piece of content inside a note (see the list at the top of cases.jsx)
+// Is there anything to show in this block on the live site?
+function blockShows(b) {
+  if (DEV) return true
+  if (b.p) return shows(b.p)
+  if (b.list) return b.list.some(shows)
+  if (b.decision) return shows(b.decision.p) || shows(b.decision.b)
+  return true
+}
+
 function Block({ b }) {
+  if (!blockShows(b)) return null
   if (b.p) return <p><Ph>{b.p}</Ph></p>
   if (b.h3) return <h3>{b.h3}</h3>
   if (b.quote) return <blockquote className="quote">{b.quote}</blockquote>
   if (b.hmw) return <div className="hmw"><small>How might we</small>{b.hmw}</div>
-  if (b.list) return <ul className="cs-list">{b.list.map((t) => <li key={t}><Ph>{t}</Ph></li>)}</ul>
+  if (b.list) return <ul className="cs-list">{b.list.filter(shows).map((t) => <li key={t}><Ph>{t}</Ph></li>)}</ul>
   if (b.img) return <Img {...b.img} />
   if (b.pair) return <div className="pair">{b.pair.map((im) => <Img key={im.src} {...im} half />)}</div>
   if (b.stats) {
@@ -76,8 +88,10 @@ function CaseStudyPage({ id }) {
   const [active, setActive] = useState(0)      // which note you're reading
   const [viewer, setViewer] = useState(null)   // null | 'slides' | 'video'
 
+  // notes with something to show (on the live site, notes that are only [bracket notes] are hidden)
+  const body = c ? c.notes.filter((n) => DEV || n.body.some((b) => (b.p || b.list || b.decision || b.stats || b.quote || b.hmw) && blockShows(b))) : []
   // the list of notes: Overview first, then each note from cases.jsx
-  const notes = c ? [{ short: 'Overview', num: '✦' }, ...c.notes.map((n, i) => ({ ...n, num: pad(i + 1) }))] : []
+  const notes = c ? [{ short: 'Overview', num: '✦' }, ...body.map((n, i) => ({ ...n, num: pad(i + 1) }))] : []
 
   // figure out which note is on screen while scrolling
   useEffect(() => {
@@ -158,15 +172,14 @@ function CaseStudyPage({ id }) {
             <a className="site-btn" href={c.link.href} target="_blank" rel="noopener">{c.link.label} ↗</a>
           )}
           <dl className="meta">
-            <div><dt>role</dt><dd><Ph>{c.role}</Ph></dd></div>
-            <div><dt>timeline</dt><dd><Ph>{c.timeline}</Ph></dd></div>
-            <div><dt>tools</dt><dd><Ph>{c.tools}</Ph></dd></div>
-            <div><dt>team</dt><dd><Ph>{c.team}</Ph></dd></div>
+            {[['role', c.role], ['timeline', c.timeline], ['tools', c.tools], ['team', c.team]]
+              .filter(([, v]) => shows(v))
+              .map(([k, v]) => <div key={k}><dt>{k}</dt><dd><Ph>{v}</Ph></dd></div>)}
           </dl>
           {c.owned && (
             <div className="owned">
               <b>What I owned</b>
-              <ul>{c.owned.map((t) => <li key={t}><Ph>{t}</Ph></li>)}</ul>
+              <ul>{c.owned.filter(shows).map((t) => <li key={t}><Ph>{t}</Ph></li>)}</ul>
             </div>
           )}
           {c.hero && <Img {...c.hero} />}
@@ -174,7 +187,7 @@ function CaseStudyPage({ id }) {
         </section>
 
         {/* one note per section */}
-        {c.notes.map((n, i) => (
+        {body.map((n, i) => (
           <section key={n.short} className="cs-note" ref={(el) => { noteRefs.current[i + 1] = el }}>
             <span className="eyebrow">{pad(i + 1)} — {n.k}</span>
             <h2>{n.h}</h2>

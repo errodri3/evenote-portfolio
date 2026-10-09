@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
+import { DEV } from './draft'
 import Mascot from './Mascot'
 import { LINKS } from '../data/about'
 import './Footer.css'
@@ -7,6 +8,7 @@ const PAGES = [
   ['Home', '/'],
   ['About', '/about'],
   ['Selected Work', '/work'],
+  ['Playground', '/playground'],
   ['write a note', '/write'],
 ]
 
@@ -28,6 +30,7 @@ function Icon({ name, size = 22 }) {
 
 // A link that stays a placeholder until you add the URL in data/about.js
 function Social({ href, label, className = 'soc', children }) {
+  if (!href && !DEV) return null   // no link yet: hidden on the live site
   if (!href) {
     return (
       <a className={className} href="#" aria-label={label} title={`${label}: add link in data/about.js`}
@@ -113,7 +116,7 @@ export default function Footer() {
           <p className="foot-made">
             made with <span className="heart" aria-label="love">♥</span>, a stylus,{' '}
             <Social href={LINKS.playlist} label="Playlist" className="">
-              {LINKS.playlist ? 'this playlist ↗' : '[this playlist] ↗'}
+              this playlist ↗
             </Social>, and a lot of doodles...
           </p>
         </div>

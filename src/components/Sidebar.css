@@ -1,5 +1,5 @@
 .side {
-  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  position: sticky; top: 84px; height: calc(100vh - 84px); overflow-y: auto;   /* sits under the header */
   display: flex; flex-direction: column; gap: 22px;
   padding: 32px 26px 26px;
   background: #F3F7EA; border-right: 2px solid var(--line);
@@ -11,13 +11,14 @@
 .side-roles dt { font-size: 13px; font-weight: 800; letter-spacing: .08em; }
 .side-roles dd { margin: 2px 0 0; color: var(--muted); font-size: 15px; }
 .side-art { margin-top: auto; aspect-ratio: 16/9; border: 2px dashed var(--line); border-radius: 14px; display: grid; place-items: center; color: var(--muted); font-size: 13px; }
+.side-spacer { margin-top: auto; }
 .side-btn { min-height: 46px; border: 2px solid var(--ink); border-radius: 12px; background: #fff; font-weight: 800; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
 .side-btn:hover { background: var(--green-lt); }
 
 /* small screens: slide-out panel */
 @media (max-width: 960px) {
   .side {
-    position: fixed; left: 0; top: 0; z-index: 50;
+    position: fixed; left: 0; top: 0; z-index: 50; height: 100vh;
     width: min(320px, 86vw);
     transform: translateX(-100%);
     transition: transform .3s ease;

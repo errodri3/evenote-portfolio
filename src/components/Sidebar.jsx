@@ -1,4 +1,5 @@
 import Mascot from './Mascot'
+import { DEV } from './draft'
 import { SIDEBAR } from '../data/about'
 import './Sidebar.css'
 
@@ -22,7 +23,8 @@ export default function Sidebar({ open, hidden, onClose, onHandheld }) {
       </dl>
 
       {/* drawing slot, like Elaine's walking illustration */}
-      <div className="side-art">[your drawing]</div>
+      {/* (only shows on your computer until you add a drawing) */}
+      {DEV ? <div className="side-art">[your drawing]</div> : <div className="side-spacer" />}
 
       <button className="side-btn" type="button" onClick={onHandheld}>Back to handheld</button>
     </aside>

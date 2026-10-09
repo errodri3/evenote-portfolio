@@ -24,7 +24,7 @@ export const CASES = {
         { img: { src: '/work/converse-to-learn/images/site.png', caption: 'The launch site' } },
       ] },
       { short: 'Now', k: 'in the works', h: "What I'm working on", body: [
-        { p: "The storybooks are still being developed, so I'm not writing up results yet. Right now I'm helping with:" },
+        { p: "The storybooks are still in development, so I'm not sharing results yet. More soon!" },
         { list: ['[for example: illustrating characters for the storybooks]', '[another small project with the team]'] },
       ] },
     ],
@@ -88,7 +88,7 @@ export const CASES = {
     timeline: 'Spring 2026 · 8 weeks',
     tools: 'Figma',
     team: 'Team 7 · 6 people',
-    lede: 'A mobile app that turns career prep into a daily habit: small challenges, AI mock interviews, and streaks with friends. Built by a team of six in 8 weeks for [course name].',
+    lede: 'A mobile app that turns career prep into a daily habit: small challenges, AI mock interviews, and streaks with friends. Built by a team of six in 8 weeks [for COURSE NAME].',
     owned: [
       'Helped shape the idea and narrow the scope during ideation',
       'Designed the hi-fi prototype in Figma [which flows/screens were yours]',

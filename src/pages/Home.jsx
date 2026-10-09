@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Mascot from '../components/Mascot'
+import Ph from '../components/Ph'
+import { dateLine } from '../components/draft'
 import Thumb from '../components/Thumb'
 import { NOTES, START_NOTE } from '../data/notes'
 import './Home.css'
@@ -140,7 +142,7 @@ export default function Home({ onBack }) {
         {/* title of the picked note */}
         <div className="sel-meta">
           <div className="sel-title">{note.title}</div>
-          <div className="sel-sub">{note.sub}</div>
+          <div className="sel-sub"><Ph>{dateLine(note.dates)}</Ph></div>
         </div>
 
         {/* arrows + slider */}
